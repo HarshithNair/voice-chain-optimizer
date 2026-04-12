@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistey — Aapka Godown, Ab Smart Ho Gaya</title>
+  <meta name="description" content="Logistey ek AI assistant hai jo aapka stock, orders aur customers handle karta hai — bina complicated software ke. Free demo available." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ===== HOME PAGE SPECIFIC ===== */
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--cream) 0%, var(--secondary) 50%, #EDD9C4 100%);
+      display: flex;
+      align-items: center;
+      padding-top: var(--nav-height);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(196,98,45,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(196,98,45,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 900;
+      color: var(--dark);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title .highlight-block {
+      display: inline-block;
+      position: relative;
+    }
+
+    .hero-title .highlight-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 8px;
+      background: rgba(196,98,45,0.2);
+      border-radius: 4px;
+      z-index: -1;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Phone/Chat mockup */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .phone-mockup {
+      width: 300px;
+      background: var(--dark);
+      border-radius: 48px;
+      padding: 18px;
+      box-shadow: var(--shadow-lg), 0 0 80px rgba(196,98,45,0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    .phone-screen {
+      background: var(--cream);
+      border-radius: 36px;
+      overflow: hidden;
+      min-height: 540px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-header {
+      background: var(--dark);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 36px 36px 0 0;
+    }
+
+    .phone-header-avatar {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .phone-header-info { flex: 1; }
+    .phone-header-info .name { color: white; font-weight: 700; font-size: 0.92rem; }
+    .phone-header-info .status { color: var(--success); font-size: 0.75rem; }
+
+    .phone-body {
+      flex: 1;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .phone-input-row {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background: white;
+      border-top: 1px solid var(--border);
+    }
+
+    .phone-input-row input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      background: var(--cream);
+      outline: none;
+    }
+
+    .phone-send {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    /* Floating cards */
+    .float-card {
+      position: absolute;
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 3;
+    }
+
+    .float-card.top-left {
+      top: 30px; left: -60px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .float-card.bottom-right {
+      bottom: 60px; right: -60px;
+      animation: float 4s ease-in-out infinite 2s;
+    }
+
+    .float-card .icon {
+      width: 36px; height: 36px;
+      background: rgba(196,98,45,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    /* PROBLEM SECTION */
+    .problem-section {
+      background: white;
+      position: relative;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .problem-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: var(--transition);
+    }
+
+    .problem-card:hover {
+      border-color: var(--primary);
+      background: rgba(196,98,45,0.04);
+    }
+
+    .problem-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .problem-card h3 {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .problem-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* SOLUTION SECTION */
+    .solution-section {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--dark-mid) 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .solution-section::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(196,98,45,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .solution-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .solution-content .section-label {
+      background: rgba(196,98,45,0.2);
+      color: var(--primary-light);
+    }
+
+    .solution-content .section-title { color: white; }
+    .solution-content .section-subtitle { color: rgba(255,255,255,0.65); }
+
+    .solution-points {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .solution-point {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .solution-point .check {
+      width: 28px; height: 28px;
+      background: rgba(196,98,45,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-light);
+      flex-shrink: 0;
+      font-size: 0.8rem;
+    }
+
+    .solution-point span {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+    }
+
+    /* HOW IT WORKS */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 56px;
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      z-index: 0;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      text-align: center;
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+      transition: var(--transition);
+    }
+
+    .step-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .step-number {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: white;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 20px rgba(196,98,45,0.35);
+    }
+
+    .step-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    .step-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* FEATURES HIGHLIGHT */
+    .features-section { background: white; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .feature-card {
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: var(--transition);
+    }
+
+    .feature-card:hover::before { transform: scaleX(1); }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      background: white;
+    }
+
+    .feat-icon {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, rgba(196,98,45,0.12), rgba(196,98,45,0.05));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      border: 1px solid rgba(196,98,45,0.15);
+    }
+
+    .feature-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials-section {
+      background: var(--secondary);
+      position: relative;
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .testi-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .testi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stars {
+      color: #F39C12;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .testi-quote {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testi-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: white;
+    }
+
+    .testi-name { font-weight: 700; font-size: 0.92rem; color: var(--dark); }
+    .testi-role { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* FINAL CTA */
+    .cta-section {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      text-align: center;
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -150px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section .section-title { color: white; margin-bottom: 12px; }
+    .cta-section .section-subtitle { color: rgba(255,255,255,0.8); margin: 0 auto 40px; }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { display: none; }
+      .solution-inner { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .testi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .problem-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🚚</div>
+      Logis<span>tey</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <a href="demo.html" class="btn btn-secondary btn-sm">Try Demo</a>
+      <a href="pricing.html" class="btn btn-primary btn-sm">Start Free</a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="features.html">Features</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="demo.html">🧪 Try Demo</a>
+</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge fade-up">
+          <span class="dot"></span>
+          🇮🇳 1,200+ Indian businesses trust us
+        </div>
+
+        <h1 class="hero-title fade-up delay-1">
+          Aapka godown,<br />
+          ab <span class="highlight highlight-block">smart</span><br />
+          ho gaya
+        </h1>
+
+        <p class="hero-sub fade-up delay-2">
+          Logistey ek AI assistant hai jo aapka stock, orders aur customers handle karta hai — <strong>bina complicated software ke</strong>. Bas message karo, kaam ho jayega.
+        </p>
+
+        <div class="hero-buttons fade-up delay-3">
+          <a href="demo.html" class="btn btn-primary btn-lg">
+            🧪 Try Demo Free
+          </a>
+          <a href="features.html" class="btn btn-secondary btn-lg">
+            Kya features hain? →
+          </a>
+        </div>
+
+        <div class="hero-stats fade-up delay-4">
+          <div class="stat-item">
+            <span class="stat-num">1,200+</span>
+            <span class="stat-label">Business owners</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">98%</span>
+            <span class="stat-label">Accuracy rate</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">₹0</span>
+            <span class="stat-label">Setup cost</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone Mockup -->
+      <div class="hero-visual fade-up">
+        <div style="position: relative;">
+          <div class="phone-mockup animate-float">
+            <div class="phone-screen">
+              <div class="phone-header">
+                <div class="phone-header-avatar">🚚</div>
+                <div class="phone-header-info">
+                  <div class="name">Logistey AI</div>
+                  <div class="status">● Online</div>
+                </div>
+              </div>
+              <div class="phone-body" id="chatBody">
+                <div class="chat-bubble bot">
+                  <div class="bubble-avatar bot">G</div>
+                  <div class="bubble-text">Namaste! Main aapka Logistey AI hoon 🙏 Kya help chahiye?</div>
+                </div>
+                <div class="chat-bubble user">
+                  <div class="bubble-avatar user-av">R</div>
+                  <div class="bubble-text">Maggi kitna bacha hai?</div>
+                </div>
+                <div class="chat-bubble bot">
+                  <div class="bubble-avatar bot">G</div>
+                  <div class="bubble-text">Ramesh bhai, <strong>Maggi ka stock 42 boxes</strong> hai ✅ Low stock alert — reorder karein? 📦</div>
+                </div>
+                <div class="chat-bubble user">
+                  <div class="bubble-avatar user-av">R</div>
+                  <div class="bubble-text">Haan, 100 boxes order kar do</div>
+                </div>
+                <div class="chat-bubble bot">
+                  <div class="bubble-avatar bot">G</div>
+                  <div class="bubble-text">Order create ho gaya! 🎉 100 boxes Maggi — delivery kal tak expected hai.</div>
+                </div>
+              </div>
+              <div class="phone-input-row">
+                <input type="text" placeholder="Message bhejo..." readonly />
+                <button class="phone-send">➤</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating cards -->
+          <div class="float-card top-left">
+            <div class="icon">📈</div>
+            <div>
+              <div style="font-size:0.75rem;color:var(--text-muted)">Today's Orders</div>
+              <div style="color:var(--dark)">+14 orders</div>
+            </div>
+          </div>
+
+          <div class="float-card bottom-right">
+            <div class="icon">⚠️</div>
+            <div>
+              <div style="font-size:0.75rem;color:var(--text-muted)">Low Stock Alert</div>
+              <div style="color:var(--primary)">Biscuit — 8 boxes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PROBLEM SECTION ========== -->
+<section class="section problem-section">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label fade-up">😓 Ye sab familiar lagta hai?</span>
+      <h2 class="section-title fade-up delay-1">Har business owner ki<br /><span class="highlight">ye problems</span> hoti hain</h2>
+      <p class="section-subtitle fade-up delay-2">Chhote business mein sab kuch manually karna padta hai — aur phir bhi galtiyan hoti hain.</p>
+    </div>
+
+    <div class="problem-grid">
+      <div class="problem-card fade-up">
+        <div class="problem-icon">📋</div>
+        <div>
+          <h3>Stock ka pata nahi rehta</h3>
+          <p>Register mein likhna padta hai, phir bhi exact count miss ho jata hai. End of day calculation — bada time lagta hai.</p>
+        </div>
+      </div>
+      <div class="problem-card fade-up delay-1">
+        <div class="problem-icon">💬</div>
+        <div>
+          <h3>Customer ko reply late hota hai</h3>
+          <p>WhatsApp pe dhero messages aate hain, sab ko manually reply karna padta hai. Customers frustrate ho jaate hain.</p>
+        </div>
+      </div>
+      <div class="problem-card fade-up delay-2">
+        <div class="problem-icon">🚚</div>
+        <div>
+          <h3>Order aur delivery track karna mushkil</h3>
+          <p>Kaunsa order kahan hai? Delivered hua ya nahi? Sab ko phone karke poochhna padta hai. Bahut time waste.</p>
+        </div>
+      </div>
+      <div class="problem-card fade-up delay-3">
+        <div class="problem-icon">📓</div>
+        <div>
+          <h3>Excel ya diary pe sab likhna padta hai</h3>
+          <p>Purani diary khogi toh puri history chali gayi. Excel formula samajhna mushkil, aur employees update nahi karte.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SOLUTION SECTION ========== -->
+<section class="section solution-section grain-bg">
+  <div class="container">
+    <div class="solution-inner">
+      <div class="solution-content">
+        <span class="section-label fade-up">✅ Solution</span>
+        <h2 class="section-title fade-up delay-1">Bas <span style="color:var(--primary-light)">message karo</span> —<br />Logistey sab karega</h2>
+        <p class="section-subtitle fade-up delay-2">Koi training nahi, koi complicated software nahi. Sirf WhatsApp jaisi simple chat — aur sab kuch automated.</p>
+
+        <div class="solution-points fade-up delay-3">
+          <div class="solution-point">
+            <div class="check">✓</div>
+            <span>Stock real-time update — kisi bhi time check karo</span>
+          </div>
+          <div class="solution-point">
+            <div class="check">✓</div>
+            <span>Orders automatically create aur track ho jaate hain</span>
+          </div>
+          <div class="solution-point">
+            <div class="check">✓</div>
+            <span>Customers ko instant smart replies milte hain</span>
+          </div>
+          <div class="solution-point">
+            <div class="check">✓</div>
+            <span>GST-ready bills ek message mein ready</span>
+          </div>
+          <div class="solution-point">
+            <div class="check">✓</div>
+            <span>Setup 2 minutes mein — zero training</span>
+          </div>
+        </div>
+
+        <div style="margin-top:36px" class="fade-up delay-4">
+          <a href="demo.html" class="btn btn-primary btn-lg">Dekho kaise kaam karta hai →</a>
+        </div>
+      </div>
+
+      <!-- Dashboard preview in dark section -->
+      <div class="fade-up delay-2" style="position:relative;">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-xl);padding:24px;backdrop-filter:blur(10px)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+            <span style="color:white;font-weight:700;font-size:1rem">📊 Live Dashboard</span>
+            <span class="badge badge-green">● Live</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+            <div style="background:rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:16px">
+              <div style="color:rgba(255,255,255,0.5);font-size:0.78rem;margin-bottom:4px">Total Stock Value</div>
+              <div style="color:white;font-size:1.4rem;font-weight:800">₹4.2L</div>
+              <div style="color:var(--success);font-size:0.78rem">↑ +12% this week</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:16px">
+              <div style="color:rgba(255,255,255,0.5);font-size:0.78rem;margin-bottom:4px">Active Orders</div>
+              <div style="color:white;font-size:1.4rem;font-weight:800">38</div>
+              <div style="color:var(--warning);font-size:0.78rem">4 need attention</div>
+            </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:16px">
+            <div style="color:rgba(255,255,255,0.5);font-size:0.78rem;margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Low Stock Alert ⚠️</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="color:rgba(255,255,255,0.85);font-size:0.88rem">Maggi Noodles</span>
+                <span class="badge badge-yellow">42 boxes</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="color:rgba(255,255,255,0.85);font-size:0.88rem">Parle Biscuit</span>
+                <span class="badge badge-red">8 boxes ⚠️</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="color:rgba(255,255,255,0.85);font-size:0.88rem">Basmati Rice 5kg</span>
+                <span class="badge badge-green">120 bags ✓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== HOW IT WORKS ========== -->
+<section class="section">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label fade-up">⚡ Simple Process</span>
+      <h2 class="section-title fade-up delay-1">Teen steps mein <span class="highlight">sab manage</span></h2>
+      <p class="section-subtitle fade-up delay-2">Koi bhi seekh sakta hai — smartphone chalaane waale koi bhi.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card fade-up">
+        <div class="step-number">1</div>
+        <h3>Message Bhejo</h3>
+        <p>WhatsApp ya Logistey app pe normal language mein likho — Hindi ya English, jo comfortable ho.</p>
+      </div>
+      <div class="step-card fade-up delay-1">
+        <div class="step-number">2</div>
+        <h3>AI Samjhega</h3>
+        <p>Logistey automatically samjhega aap kya chahte ho — stock check, order ya kuch aur.</p>
+      </div>
+      <div class="step-card fade-up delay-2">
+        <div class="step-number">3</div>
+        <h3>System Update</h3>
+        <p>Dashboard automatically update ho jayega. Bill, order, stock — sab ek jagah, real-time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FEATURES HIGHLIGHT ========== -->
+<section class="section features-section">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label fade-up">🛠️ Features</span>
+      <h2 class="section-title fade-up delay-1">Sab kuch ek <span class="highlight">jagah</span></h2>
+      <p class="section-subtitle fade-up delay-2">Woh sab features jo ek chhote business ko actually chahiye — koi extra clutter nahi.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card fade-up">
+        <div class="feat-icon">📦</div>
+        <h3>Inventory Tracking</h3>
+        <p>Real-time stock count, low stock alerts, reorder automation. "Maggi kitna hai?" — instant answer.</p>
+      </div>
+      <div class="feature-card fade-up delay-1">
+        <div class="feat-icon">🛒</div>
+        <h3>Order Management</h3>
+        <p>Chat se order create karo. Automatic entry, status tracking, delivery confirmation — sab auto.</p>
+      </div>
+      <div class="feature-card fade-up delay-2">
+        <div class="feat-icon">🚚</div>
+        <h3>Delivery Tracking</h3>
+        <p>"Order kahan hai?" — ek message mein delivery status, expected date, aur driver info milega.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feat-icon">💬</div>
+        <h3>Customer Chat</h3>
+        <p>WhatsApp-style interface. Auto-replies, order status updates, aur personalized interaction.</p>
+      </div>
+      <div class="feature-card fade-up delay-1">
+        <div class="feat-icon">🧾</div>
+        <h3>Smart Billing</h3>
+        <p>"Bill bana do" — GST-ready invoice ready in seconds. PDF download, WhatsApp pe share karo.</p>
+      </div>
+      <div class="feature-card fade-up delay-2">
+        <div class="feat-icon">📊</div>
+        <h3>Business Analytics</h3>
+        <p>Weekly reports, bestselling products, top customers — simple language mein, charts ke saath.</p>
+      </div>
+    </div>
+
+    <div class="text-center" style="margin-top:48px">
+      <a href="features.html" class="btn btn-outline btn-lg fade-up">Saare features dekho →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TESTIMONIALS ========== -->
+<section class="section testimonials-section">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label fade-up">❤️ Real Stories</span>
+      <h2 class="section-title fade-up delay-1">Woh log jo already <span class="highlight">smart ho gaye</span></h2>
+      <p class="section-subtitle fade-up delay-2">1,200+ business owners use karte hain — yeh unke real words hain.</p>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Pehle sab register mein likhta tha, ab bas message karta hoon. Logistey ne mera 2 ghante roz ka time bacha diya. Sachchi, yeh mere kaam ka hai!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#C4622D,#A04E22)">R</div>
+          <div>
+            <div class="testi-name">Ramesh Sakharkar</div>
+            <div class="testi-role">Wholesaler, Bhiwandi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card fade-up delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Meri Kirana shop ke liye bilkul perfect hai. Customers ko order status automatically WhatsApp pe milta hai. Aur bill bhi ek second mein!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#2980B9,#1A6B9A)">S</div>
+          <div>
+            <div class="testi-name">Sunita Agarwal</div>
+            <div class="testi-role">Kirana Store Owner, Pune</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card fade-up delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Excel chodh diya maine. Logistey pe sab kuch hai — stock, orders, customers. Kaafi easy hai aur affordable bhi. Highly recommend!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#27AE60,#1E8449)">M</div>
+          <div>
+            <div class="testi-name">Mahesh Gupta</div>
+            <div class="testi-role">Distributor, Nagpur</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FINAL CTA ========== -->
+<section class="cta-section grain-bg">
+  <div class="container" style="position:relative;z-index:1">
+    <span class="section-label" style="background:rgba(255,255,255,0.15);color:white;margin-bottom:20px;display:inline-flex">
+      🚀 Abhi shuru karo
+    </span>
+    <h2 class="section-title fade-up" style="color:white;">Abhi start karo —<br />free demo available hai</h2>
+    <p class="section-subtitle fade-up delay-1" style="color:rgba(255,255,255,0.8);margin:0 auto 40px;">
+      No credit card. No setup fee. Koi complicated training nahi. <br />Bas 2 minutes mein ready.
+    </p>
+    <div class="cta-buttons fade-up delay-2">
+      <a href="demo.html" class="btn btn-white btn-lg">🧪 Try Free Demo</a>
+      <a href="contact.html" class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:white;border:2px solid rgba(255,255,255,0.35)">📞 Talk to Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="logo-icon">🚚</div>
+          Logis<span style="color:var(--primary-light)">tey</span>
+        </div>
+        <p>India ke chhote aur medium businesses ke liye banaya gaya AI-powered logistics aur inventory management assistant.</p>
+        <div style="margin-top:20px;display:flex;gap:12px">
+          <a href="contact.html" class="btn btn-primary btn-sm">Start Free</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="demo.html">Demo</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="https://wa.me/919999999999">💬 WhatsApp</a></li>
+          <li><a href="tel:+919999999999">📞 +91 99999 99999</a></li>
+          <li><a href="mailto:help@Logistey.in">📧 help@Logistey.in</a></li>
+          <li><a href="#">🏢 Mumbai, India</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2024 Logistey. Made with ❤️ for Indian businesses.</span>
+      <span>"Business chalana ab easy hai" 🚀</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+
+  // Intersection Observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

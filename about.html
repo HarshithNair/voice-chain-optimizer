@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Logistey | India ke chhote business ke liye banaya gaya</title>
+  <meta name="description" content="Logistey ki story — India ke chhote business ke liye ek simple, affordable aur powerful AI tool jo language barriers ko tod ke technology sabke paas laata hai." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero {
+      background: linear-gradient(160deg, var(--dark) 0%, var(--dark-mid) 100%);
+      padding: calc(var(--nav-height) + 80px) 0 80px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content:'';position:absolute;top:-150px;right:-150px;width:500px;height:500px;
+      background:radial-gradient(circle,rgba(196,98,45,0.18) 0%,transparent 70%);
+    }
+    .page-hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .page-hero .section-title { color:white; }
+    .page-hero .section-subtitle { color:rgba(255,255,255,0.65); }
+
+    /* Mission */
+    .mission-section {
+      background: var(--cream);
+      padding: 96px 0;
+    }
+
+    .mission-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .big-quote {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.4;
+      letter-spacing: -0.5px;
+    }
+
+    .big-quote span { color: var(--primary); }
+
+    .mission-text {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-top: 20px;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .value-card {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 28px;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .value-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .value-icon { font-size: 2rem; margin-bottom: 12px; }
+    .value-card h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+    .value-card p  { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* Story */
+    .story-section { background: white; padding: 96px 0; }
+    .story-content { max-width: 760px; margin: 0 auto; }
+
+    .story-block {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .story-num {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .story-block h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .story-block p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    /* Team */
+    .team-section { background: var(--secondary); padding: 96px 0; }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 56px;
+    }
+
+    .team-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: 36px 28px;
+      text-align: center;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .team-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+    .team-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 auto 16px;
+      color: white;
+    }
+
+    .team-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+    .team-card .role { font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-bottom: 12px; }
+    .team-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* Impact numbers */
+    .impact-section {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 80px 0;
+      text-align: center;
+      color: white;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 48px;
+    }
+
+    .impact-item .num {
+      font-size: 3rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .impact-item .label {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.75);
+    }
+
+    @media (max-width: 1024px) {
+      .page-hero-inner, .mission-inner { grid-template-columns: 1fr; gap: 40px; }
+      .impact-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+      .story-block { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">📦</div>Logis<span>tey</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
+      <li><a href="pricing.html">Pricing</a></li><li><a href="about.html" class="active">About</a></li>
+      <li><a href="contact.html">Contact</a></li><li><a href="demo.html">Demo</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="demo.html" class="btn btn-secondary btn-sm">Try Demo</a>
+      <a href="pricing.html" class="btn btn-primary btn-sm">Start Free</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a>
+  <a href="about.html">About</a><a href="contact.html">Contact</a><a href="demo.html">🧪 Try Demo</a>
+</div>
+
+<!-- HERO -->
+<section class="page-hero grain-bg">
+  <div class="container" style="position:relative;z-index:1">
+    <div class="page-hero-inner">
+      <div>
+        <span class="section-label fade-up" style="background:rgba(196,98,45,0.2);color:var(--primary-light)">👥 About Us</span>
+        <h1 class="section-title fade-up delay-1" style="color:white;margin-top:16px">India ke chhote business ke liye<br /><span style="color:var(--primary-light)">banaya gaya</span></h1>
+        <p class="section-subtitle fade-up delay-2" style="max-width:480px">Complex ERP nahi chahiye — sirf ek simple chat tool jo samjhe. Logistey woh technology hai jo har dukaan deserve karti hai.</p>
+        <div style="margin-top:36px;display:flex;gap:16px;flex-wrap:wrap" class="fade-up delay-3">
+          <a href="demo.html" class="btn btn-primary btn-lg">Try Demo</a>
+          <a href="contact.html" class="btn btn-lg" style="background:rgba(255,255,255,0.1);color:white;border:2px solid rgba(255,255,255,0.25)">📞 Baat karo</a>
+        </div>
+      </div>
+
+      <div class="fade-up delay-2" style="display:flex;flex-direction:column;gap:16px">
+        <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-xl);padding:28px;backdrop-filter:blur(10px)">
+          <div style="font-size:3rem;margin-bottom:8px">🇮🇳</div>
+          <div style="color:white;font-size:1.3rem;font-weight:800;margin-bottom:8px">"Har dukaan ko smart banana"</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.7">India mein 6 crore se zyada chhote businesses hain. Inme se zyaadatar aaj bhi register aur Excel use karte hain. Logistey yeh badalna chahta hai.</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:20px;text-align:center">
+            <div style="font-size:1.8rem;font-weight:900;color:white">2022</div>
+            <div style="font-size:0.8rem;color:rgba(255,255,255,0.6)">Founded</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:20px;text-align:center">
+            <div style="font-size:1.8rem;font-weight:900;color:white">1,200+</div>
+            <div style="font-size:0.8rem;color:rgba(255,255,255,0.6)">Businesses</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission-section">
+  <div class="container">
+    <div class="mission-inner">
+      <div class="fade-up">
+        <span class="section-label">🎯 Our Mission</span>
+        <div class="big-quote">
+          "Technology sabke liye honi chahiye —<br /><span>sirf tech-savvy logo ke liye nahi"</span>
+        </div>
+        <p class="mission-text">
+          Logistey ka janam Mumbai ke ek Kirana store mein hua — jab hamare founder ne dekha ki ek smart wholesale businessman roz 3 ghante sirf stock likhne mein barbaad karta tha.
+          <br /><br />
+          Humara belief hai ki India ke 6 crore chhote business owners complex software nahi, balance aur dost chahiye — jo unki zubaan mein baat kare aur unka kaam kare.
+        </p>
+      </div>
+
+      <div class="values-grid fade-up delay-2">
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h3>Trust First</h3>
+          <p>Aapka data hamesha safe. Koi unnecessary data collection nahi. Transparency sab mein.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🗣️</div>
+          <h3>Aapki Zubaan</h3>
+          <p>Hindi, Hinglish, English — Logistey woh bolata hai jo aap samajhte ho.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">💡</div>
+          <h3>Simple by Design</h3>
+          <p>Koi feature tabhi add hota hai jab woh actually kaam aata hai. No bloat.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🇮🇳</div>
+          <h3>Made for India</h3>
+          <p>GST, UPI, Indian products, Indian business context — sab kuch India pehle.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT NUMBERS -->
+<section class="impact-section grain-bg">
+  <div class="container" style="position:relative;z-index:1">
+    <div class="impact-grid">
+      <div class="impact-item fade-up">
+        <div class="num">1,200+</div>
+        <div class="label">Active businesses</div>
+      </div>
+      <div class="impact-item fade-up delay-1">
+        <div class="num">4.2L+</div>
+        <div class="label">Orders processed</div>
+      </div>
+      <div class="impact-item fade-up delay-2">
+        <div class="num">98%</div>
+        <div class="label">Customer satisfaction</div>
+      </div>
+      <div class="impact-item fade-up delay-3">
+        <div class="num">2 hrs</div>
+        <div class="label">Saved per day / owner</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story-section">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:56px">
+      <span class="section-label fade-up">📖 Our Story</span>
+      <h2 class="section-title fade-up delay-1">Kaise sab <span class="highlight">shuru hua</span></h2>
+    </div>
+
+    <div class="story-content">
+      <div class="story-block fade-up">
+        <div class="story-num">1</div>
+        <div>
+          <h3>Problem dikha (2021)</h3>
+          <p>Mumbai ke Dharavi market mein, hamare founder Arjun ne dekha ki bahut saare chhote business owners roz 2-3 ghante sirf register likhne mein barbaad karte hain. Stock miss hota tha, orders bhool jaate the, customers frustrated hote the. Excel bhi bahuts complicated tha.</p>
+        </div>
+      </div>
+
+      <div class="story-block fade-up delay-1">
+        <div class="story-num">2</div>
+        <div>
+          <h3>Idea aaya (2022)</h3>
+          <p>"Agar log itna WhatsApp use kar sakte hain, toh simple chat se godown kyon nahi manage kar sakte?" — yeh ek sawal Logistey bana. Pehla prototype 3 Kirana stores ne try kiya, aur feedback overwhelming tha: "Yeh kaam karta hai!"</p>
+        </div>
+      </div>
+
+      <div class="story-block fade-up delay-2">
+        <div class="story-num">3</div>
+        <div>
+          <h3>Grow kiya (2023-24)</h3>
+          <p>Mumbai se Bhiwandi, Pune, Nagpur, Surat — 1,200 se zyada business owners ne adopt kiya. Hamare users ne average mein 2 ghante roz bachaye aur 35% fewer order errors report kiye. Logistey apna vision prove kar chuka hai.</p>
+        </div>
+      </div>
+
+      <div class="story-block fade-up delay-3">
+        <div class="story-num">4</div>
+        <div>
+          <h3>Future hai bada (2025+)</h3>
+          <p>Hum aage aur cities, languages, aur industry verticals mein expand kar rahe hain. Vision simple hai: India ke har chhote business owner ke haath mein ek smart AI assistant. "Har dukaan ko smart banana" — yeh mission abhi bhi jaari hai.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label fade-up">👥 The Team</span>
+      <h2 class="section-title fade-up delay-1">Log jo <span class="highlight">Logistey banate hain</span></h2>
+      <p class="section-subtitle fade-up delay-2">Ek passionate team jo India ke business owners ki real problems solve karna chahti hai.</p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card fade-up">
+        <div class="team-avatar" style="background:linear-gradient(135deg,var(--primary),var(--primary-dark))">A</div>
+        <h3>Arjun Mehta</h3>
+        <div class="role">Founder & CEO</div>
+        <p>Ex-supply chain consultant. 8 saal India ke FMCG distribution sector mein. "Business owners ki takleef mujhe personally samajh aati hai."</p>
+      </div>
+      <div class="team-card fade-up delay-1">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#2980B9,#1A6B9A)">P</div>
+        <h3>Priya Sharma</h3>
+        <div class="role">CTO</div>
+        <p>IIT Bombay alumna. AI/ML specialist with a passion for making technology accessible to non-tech users. Builds Logistey's brain.</p>
+      </div>
+      <div class="team-card fade-up delay-2">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#27AE60,#1E8449)">R</div>
+        <h3>Riya Patel</h3>
+        <div class="role">Head of Customer Success</div>
+        <p>Previously ran a family wholesale business in Surat. Understands exactly what our users need — because she was one of them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section grain-bg">
+  <div class="container" style="position:relative;z-index:1">
+    <h2 class="section-title fade-up" style="color:white">Hamare mission mein<br />shamil ho jaao</h2>
+    <p class="section-subtitle fade-up delay-1" style="color:rgba(255,255,255,0.8);margin:0 auto 40px">Ek free demo try karo. Agar 10 minutes mein convince nahi hue, toh hum surprised honge.</p>
+    <div class="cta-buttons fade-up delay-2">
+      <a href="demo.html" class="btn btn-white btn-lg">🧪 Free Demo</a>
+      <a href="contact.html" class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:white;border:2px solid rgba(255,255,255,0.35)">📞 Baat karo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo"><div class="logo-icon">📦</div>Logis<span style="color:var(--primary-light)">tey</span></div>
+        <p>India ke chhote aur medium businesses ke liye banaya gaya AI assistant.</p>
+      </div>
+      <div class="footer-col"><h4>Pages</h4><ul><li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="demo.html">Demo</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="#">Privacy</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="https://wa.me/919999999999">💬 WhatsApp</a></li><li><a href="tel:+919999999999">📞 +91 99999 99999</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Logistey. Made with ❤️ for Indian businesses.</span>
+      <span>"AI jo aapka kaam samjhe" 🤖</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('open'));
+  const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

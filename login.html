@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="hi-IN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistey — Aapka Vyapaar Portal | Sign In</title>
+  <meta name="description" content="Logistey pe login karo — kirana, wholesaler, distributor sab ke liye. OTP-based simple login." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --saffron:     #FF7722;
+      --primary:     #C4622D;
+      --primary-dk:  #A04E22;
+      --dark:        #2C1810;
+      --cream:       #FDF8F3;
+      --border:      rgba(255,255,255,0.28);
+      --glass:       rgba(255,255,255,0.82);
+      --text-muted:  #7A6055;
+      --success:     #2ECC71;
+      --danger:      #E74C3C;
+      --radius-fluid: 28px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a0a04;
+    }
+
+    /* ===== ANIMATED BACKGROUND ===== */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(-45deg,
+        #1a0a04 0%,
+        #3D1A0A 20%,
+        #C4622D 40%,
+        #FF7722 55%,
+        #E05A00 70%,
+        #2C1810 85%,
+        #1a0a04 100%
+      );
+      background-size: 400% 400%;
+      animation: gradShift 10s ease-in-out infinite;
+    }
+
+    @keyframes gradShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.45;
+      animation: blobFloat 8s ease-in-out infinite;
+    }
+
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #FF7722, transparent);
+      top: -120px; left: -120px;
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #C4622D, transparent);
+      bottom: -80px; right: -80px;
+      animation-delay: -3s;
+    }
+
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #FF9944, transparent);
+      top: 50%; left: 60%;
+      animation-delay: -5s;
+    }
+
+    @keyframes blobFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(30px, -30px) scale(1.08); }
+      66%       { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* Subtle grid overlay */
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ===== WRAPPER ===== */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* ===== GLASS CARD ===== */
+    .auth-card {
+      width: 100%;
+      max-width: 460px;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border-radius: var(--radius-fluid);
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow:
+        0 32px 80px rgba(44,24,16,0.35),
+        0 0 0 1px rgba(255,255,255,0.12) inset,
+        0 1px 0 rgba(255,255,255,0.5) inset;
+      overflow: hidden;
+      animation: cardIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(40px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Logo strip */
+    .card-header {
+      background: linear-gradient(135deg, var(--dark) 0%, #3D2218 100%);
+      padding: 28px 40px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header::before {
+      content: '';
+      position: absolute;
+      top: -40px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 120px;
+      background: radial-gradient(circle, rgba(255,119,34,0.25), transparent);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: white;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-logo .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--saffron), var(--primary-dk));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 16px rgba(255,119,34,0.4);
+    }
+
+    .brand-logo span { color: #FF9944; }
+
+    .card-header-sub {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.8rem;
+      margin-top: 6px;
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Card body */
+    .card-body { padding: 36px 40px 40px; }
+
+    /* Steps */
+    .step { display: none; }
+    .step.active { display: block; animation: stepIn 0.4s ease; }
+
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Step indicator */
+    .step-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .step-dot {
+      height: 4px;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      background: rgba(196,98,45,0.2);
+    }
+
+    .step-dot.done { background: var(--success); }
+    .step-dot.active { background: var(--primary); width: 32px !important; }
+
+    .step-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .step-sub {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .step-sub .hindi { font-family: 'Noto Sans Devanagari', sans-serif; }
+
+    /* Form elements */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .form-label .hindi-sub {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(122,96,85,0.6);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: 700;
+      color: var(--dark);
+      font-size: 0.95rem;
+      border-right: 1.5px solid rgba(196,98,45,0.25);
+      padding-right: 12px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .form-input {
+      width: 100%;
+      border: 2px solid rgba(196,98,45,0.2);
+      border-radius: 14px;
+      padding: 14px 16px 14px 76px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      color: var(--dark);
+      outline: none;
+      transition: all 0.25s ease;
+      background: rgba(253,248,243,0.8);
+      letter-spacing: 1px;
+    }
+
+    .form-input.no-prefix { padding-left: 16px; }
+
+    .form-input:focus {
+      border-color: var(--saffron);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(255,119,34,0.12);
+    }
+
+    .form-input::placeholder { color: #C0A898; font-size: 0.95rem; letter-spacing: 0; }
+
+    /* OTP Grid */
+    .otp-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 8px 0 20px;
+    }
+
+    .otp-box {
+      border: 2px solid rgba(196,98,45,0.2);
+      border-radius: 14px;
+      padding: 16px 8px;
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--dark);
+      outline: none;
+      background: rgba(253,248,243,0.8);
+      transition: all 0.25s ease;
+      width: 100%;
+    }
+
+    .otp-box:focus {
+      border-color: var(--saffron);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(255,119,34,0.12);
+    }
+
+    /* Business type grid */
+    .biz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .biz-card {
+      border: 2px solid rgba(196,98,45,0.15);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: rgba(253,248,243,0.6);
+      user-select: none;
+    }
+
+    .biz-card:hover {
+      border-color: var(--primary);
+      background: rgba(196,98,45,0.05);
+      transform: scale(1.03);
+    }
+
+    .biz-card.selected {
+      border-color: var(--saffron);
+      background: linear-gradient(135deg, rgba(255,119,34,0.1), rgba(196,98,45,0.06));
+      box-shadow: 0 4px 16px rgba(255,119,34,0.2);
+      transform: scale(1.03);
+    }
+
+    .biz-icon {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .biz-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--dark);
+      display: block;
+    }
+
+    .biz-name-hindi {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Action button */
+    .btn-auth {
+      width: 100%;
+      padding: 15px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--saffron) 0%, var(--primary-dk) 100%);
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(196,98,45,0.4);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-auth:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(196,98,45,0.5);
+    }
+
+    .btn-auth:active { transform: translateY(0); }
+
+    .btn-auth::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    }
+
+    /* Ripple on click */
+    .ripple-circle {
+      position: absolute;
+      border-radius: 50%;
+      width: 60px; height: 60px;
+      background: rgba(255,255,255,0.25);
+      animation: ripple 0.6s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      from { transform: scale(0); opacity: 1; }
+      to   { transform: scale(4); opacity: 0; }
+    }
+
+    /* Resend OTP */
+    .resend-row {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .resend-btn {
+      color: var(--primary);
+      font-weight: 700;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .resend-btn:hover { color: var(--saffron); }
+
+    /* Timer */
+    .timer {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Trust row */
+    .trust-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(196,98,45,0.1);
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Back link */
+    .back-to-site {
+      position: fixed;
+      top: 24px;
+      left: 28px;
+      z-index: 10;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .back-to-site:hover { color: white; transform: translateX(-3px); }
+
+    /* Success screen */
+    .success-screen {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success-orb {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(46,204,113,0.2), rgba(46,204,113,0.05));
+      border: 2px solid rgba(46,204,113,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 20px;
+      animation: pulseSoft 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseSoft {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46,204,113,0.3); }
+      50%       { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(46,204,113,0); }
+    }
+
+    /* Error shake */
+    .shake {
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%       { transform: translateX(-8px); }
+      40%       { transform: translateX(8px); }
+      60%       { transform: translateX(-5px); }
+      80%       { transform: translateX(5px); }
+    }
+
+    /* Voice Biometric */
+    @keyframes orbGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(142,68,173,0.5), 0 0 40px rgba(142,68,173,0.2); }
+      50%       { box-shadow: 0 0 40px rgba(142,68,173,0.8), 0 0 80px rgba(142,68,173,0.4); }
+    }
+    @keyframes micPulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.12); }
+    }
+    .voice-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .voice-divider::before,
+    .voice-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(196,98,45,0.15);
+    }
+    .voice-divider span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .btn-voice {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1a0a2e, #2D0E5A);
+      color: white;
+      font-family: 'Noto Sans Devanagari', 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: 1.5px solid rgba(142,68,173,0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-voice:hover {
+      border-color: rgba(142,68,173,0.7);
+      box-shadow: 0 8px 24px rgba(142,68,173,0.3);
+      transform: translateY(-2px);
+    }
+    .btn-voice .mic-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8E44AD, #6C3483);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    /* Voice recording modal */
+    .voice-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,10,46,0.92);
+      backdrop-filter: blur(16px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .voice-modal.open { display: flex; }
+    .mic-orb {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(191,127,239,0.5), rgba(142,68,173,0.2));
+      border: 2px solid rgba(191,127,239,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      animation: orbGlow 1.5s ease-in-out infinite, micPulse 0.8s ease-in-out infinite;
+    }
+    .voice-waveform {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 40px;
+    }
+    .v-bar {
+      width: 4px;
+      border-radius: 2px;
+      background: #BF7FEF;
+      animation: vBarAnim var(--vd,0.7s) ease-in-out infinite alternate;
+    }
+    @keyframes vBarAnim {
+      from { height: 4px; opacity: 0.4; }
+      to   { height: var(--vh,30px); opacity: 1; }
+    }
+
+    /* Toggle sign up / sign in */
+    .toggle-auth {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-auth button {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.86rem;
+    }
+
+    .toggle-auth button:hover { color: var(--saffron); }
+
+    @media (max-width: 500px) {
+      .card-body { padding: 28px 24px 32px; }
+      .card-header { padding: 24px 24px 20px; }
+      .biz-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Animated background -->
+<div class="bg-canvas">
+  <div class="bg-gradient"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="bg-grid"></div>
+</div>
+
+<!-- Back link -->
+<a class="back-to-site" href="index.html">← वापस जाएं / Back to site</a>
+
+<div class="page-wrap">
+  <div class="auth-card">
+
+    <!-- Header -->
+    <div class="card-header">
+      <div class="brand-logo">
+        <div class="logo-icon">🚚</div>
+        Logis<span>tey</span>
+      </div>
+      <div class="card-header-sub">🇮🇳 आपका व्यापार पोर्टल — Aapka Vyapaar Portal</div>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body">
+
+      <!-- Step dots -->
+      <div class="step-dots" id="stepDots">
+        <div class="step-dot active" style="width:32px" id="dot1"></div>
+        <div class="step-dot" style="width:16px" id="dot2"></div>
+        <div class="step-dot" style="width:16px" id="dot3"></div>
+      </div>
+
+      <!-- ===== STEP 1: Phone ===== -->
+      <div class="step active" id="step1">
+        <div class="step-title">📱 Mobile Number Daalo</div>
+        <div class="step-sub">OTP aayega aapke number pe — <span class="hindi">कोई password नहीं चाहिए</span></div>
+
+        <div class="form-group">
+          <div class="form-label">
+            Mobile Number
+            <span class="hindi-sub">• मोबाइल नंबर</span>
+          </div>
+          <div class="input-wrap">
+            <span class="input-prefix">🇮🇳 +91</span>
+            <input class="form-input" id="phoneInput" type="tel" maxlength="10" placeholder="98765 43210" oninput="validatePhone()" />
+          </div>
+          <div id="phoneError" style="font-size:0.78rem;color:#E74C3C;margin-top:6px;display:none">⚠️ Valid 10-digit mobile number daalo</div>
+        </div>
+
+        <button class="btn-auth" id="sendOtpBtn" onclick="sendOTP(event)" style="margin-top:6px">
+          📲 OTP Bhejo
+        </button>
+
+        <!-- OR Voice Biometric -->
+        <div class="voice-divider"><span>YA PHIR / OR</span></div>
+
+        <button class="btn-voice" onclick="voiceSignIn()">
+          <div class="mic-icon">🎤</div>
+          <div style="text-align:left">
+            <div style="font-size:0.92rem;font-weight:800">अपनी आवाज़ से लॉगिन करें</div>
+            <div style="font-size:0.72rem;font-weight:500;opacity:0.7">Voice Biometric Sign-In — Instant Access</div>
+          </div>
+          <span style="margin-left:auto;font-size:0.72rem;background:rgba(142,68,173,0.3);border:1px solid rgba(142,68,173,0.5);border-radius:100px;padding:3px 10px;font-weight:700">🔬 BETA</span>
+        </button>
+
+        <div class="toggle-auth">
+          Pehle se account hai? <button onclick="toggleMode()">Login karo →</button>
+        </div>
+
+        <div class="trust-row">
+          <div class="trust-item">🔒 Secure</div>
+          <div class="trust-item">⚡ 30 sec login</div>
+          <div class="trust-item">🇮🇳 Made for India</div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: OTP ===== -->
+      <div class="step" id="step2">
+        <div class="step-title">🔐 OTP Verify Karo</div>
+        <div class="step-sub" id="otpSub">
+          OTP bheja gaya <span id="displayPhone" style="font-weight:700;color:var(--dark)">+91 XXXXX XXXXX</span> pe<br />
+          <span class="hindi">Demo mein OTP hai: <strong>1234</strong></span>
+        </div>
+
+        <div class="otp-grid">
+          <input class="otp-box" id="otp1" type="tel" maxlength="1" oninput="otpInput(this,'otp2')" onkeydown="otpBack(event,this,null)" />
+          <input class="otp-box" id="otp2" type="tel" maxlength="1" oninput="otpInput(this,'otp3')" onkeydown="otpBack(event,this,'otp1')" />
+          <input class="otp-box" id="otp3" type="tel" maxlength="1" oninput="otpInput(this,'otp4')" onkeydown="otpBack(event,this,'otp2')" />
+          <input class="otp-box" id="otp4" type="tel" maxlength="1" oninput="otpInput(this,null)"   onkeydown="otpBack(event,this,'otp3')" />
+        </div>
+
+        <button class="btn-auth" onclick="verifyOTP(event)">
+          ✅ Verify Karo
+        </button>
+
+        <div class="resend-row">
+          OTP nahi aaya? &nbsp;
+          <span id="resendTimer">Dobara bhejo <span class="timer" id="timerCount">30s</span> mein</span>
+          <button class="resend-btn" id="resendBtn" onclick="resendOTP()" style="display:none">🔁 Dobara Bhejo</button>
+        </div>
+
+        <div style="text-align:center;margin-top:16px">
+          <button onclick="goStep(1)" style="background:none;border:none;color:var(--text-muted);font-size:0.82rem;cursor:pointer;font-family:'Outfit',sans-serif">← Number change karo</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3: Business Type ===== -->
+      <div class="step" id="step3">
+        <div class="step-title">🏪 Aapka Business Kaisa Hai?</div>
+        <div class="step-sub">Sahi setup ke liye select karo — baad mein change kar sakte ho<br /><span class="hindi">अपना व्यापार चुनें</span></div>
+
+        <div class="biz-grid" id="bizGrid">
+          <div class="biz-card" onclick="selectBiz(this,'kirana')">
+            <span class="biz-icon">🏪</span>
+            <span class="biz-name">Kirana Store</span>
+            <span class="biz-name-hindi">किराना दुकान</span>
+          </div>
+          <div class="biz-card" onclick="selectBiz(this,'wholesale')">
+            <span class="biz-icon">🏭</span>
+            <span class="biz-name">Wholesaler</span>
+            <span class="biz-name-hindi">थोक व्यापारी</span>
+          </div>
+          <div class="biz-card" onclick="selectBiz(this,'distributor')">
+            <span class="biz-icon">🚚</span>
+            <span class="biz-name">Distributor</span>
+            <span class="biz-name-hindi">वितरक</span>
+          </div>
+          <div class="biz-card" onclick="selectBiz(this,'electronics')">
+            <span class="biz-icon">📱</span>
+            <span class="biz-name">Electronics</span>
+            <span class="biz-name-hindi">इलेक्ट्रॉनिक</span>
+          </div>
+          <div class="biz-card" onclick="selectBiz(this,'cloth')">
+            <span class="biz-icon">👗</span>
+            <span class="biz-name">Kapda / Cloth</span>
+            <span class="biz-name-hindi">कपड़ा व्यापार</span>
+          </div>
+          <div class="biz-card" onclick="selectBiz(this,'other')">
+            <span class="biz-icon">✨</span>
+            <span class="biz-name">Aur kuch</span>
+            <span class="biz-name-hindi">अन्य</span>
+          </div>
+        </div>
+
+        <button class="btn-auth" id="bizContinueBtn" onclick="completeBiz(event)" style="opacity:0.55;pointer-events:none">
+          🚀 Mera Dashboard Kholo
+        </button>
+      </div>
+
+      <!-- ===== STEP 4: Success ===== -->
+      <div class="step" id="step4">
+        <div class="success-screen">
+          <div class="success-orb">🎉</div>
+          <div class="step-title" style="margin-bottom:10px">स्वागत है! Welcome!</div>
+          <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.6;margin-bottom:28px">
+            Aapka account ready hai. Ab Logistey se apna godown manage karo — inventory, orders, chat — sab ek jagah!
+          </p>
+          <a href="demo.html" class="btn-auth" style="display:flex;text-decoration:none">
+            📊 Dashboard Explore Karo →
+          </a>
+          <div style="margin-top:16px;font-size:0.82rem;color:var(--text-muted)">
+            <span class="hindi">Aapka 7-day free trial shuru ho gaya hai ⏱️</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- card-body -->
+  </div><!-- auth-card -->
+</div>
+
+<!-- Voice Biometric Modal -->
+<div class="voice-modal" id="voiceModal">
+  <div class="mic-orb" id="micOrb">🎤</div>
+  <div class="voice-waveform">
+    <div class="v-bar" style="--vh:8px;--vd:0.5s"></div>
+    <div class="v-bar" style="--vh:28px;--vd:0.7s"></div>
+    <div class="v-bar" style="--vh:18px;--vd:0.4s"></div>
+    <div class="v-bar" style="--vh:35px;--vd:0.6s"></div>
+    <div class="v-bar" style="--vh:22px;--vd:0.8s"></div>
+    <div class="v-bar" style="--vh:30px;--vd:0.5s"></div>
+    <div class="v-bar" style="--vh:15px;--vd:0.65s"></div>
+    <div class="v-bar" style="--vh:32px;--vd:0.45s"></div>
+    <div class="v-bar" style="--vh:20px;--vd:0.7s"></div>
+    <div class="v-bar" style="--vh:12px;--vd:0.55s"></div>
+    <div class="v-bar" style="--vh:28px;--vd:0.6s"></div>
+    <div class="v-bar" style="--vh:18px;--vd:0.75s"></div>
+    <div class="v-bar" style="--vh:35px;--vd:0.5s"></div>
+    <div class="v-bar" style="--vh:10px;--vd:0.65s"></div>
+    <div class="v-bar" style="--vh:26px;--vd:0.55s"></div>
+    <div class="v-bar" style="--vh:20px;--vd:0.7s"></div>
+  </div>
+  <div id="voiceStatus" style="color:white;font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;text-align:center">
+    🎤 सुन रहे हैं... / Listening...
+  </div>
+  <div style="color:rgba(191,127,239,0.7);font-size:0.8rem;font-family:'Noto Sans Devanagari','Outfit',sans-serif">
+    अपनी आवाज़ में बोलिए: &ldquo;मैं Ramesh हूँ&rdquo;
+  </div>
+  <button onclick="closeVoiceModal()" style="margin-top:16px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;padding:8px 24px;border-radius:100px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:0.85rem">✕ Cancel</button>
+</div>
+
+<script>
+  let currentStep = 1;
+  let selectedBiz = null;
+  let timerInterval = null;
+
+  function updateDots(step) {
+    [1,2,3].forEach(i => {
+      const dot = document.getElementById('dot'+i);
+      dot.classList.remove('active','done');
+      dot.style.width = '16px';
+      if (i < step) { dot.classList.add('done'); dot.style.width = '16px'; }
+      if (i === step) { dot.classList.add('active'); dot.style.width = '32px'; }
+    });
+    if (step === 4) {
+      [1,2,3].forEach(i => {
+        const dot = document.getElementById('dot'+i);
+        dot.classList.remove('active');
+        dot.classList.add('done');
+        dot.style.width = '16px';
+      });
+    }
+  }
+
+  function goStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step'+n).classList.add('active');
+    currentStep = n;
+    updateDots(n);
+  }
+
+  function validatePhone() {
+    const val = document.getElementById('phoneInput').value;
+    document.getElementById('phoneError').style.display = (val.length > 0 && (val.length !== 10 || !/^[6-9]/.test(val))) ? 'block' : 'none';
+  }
+
+  function sendOTP(e) {
+    const phone = document.getElementById('phoneInput').value;
+    if (phone.length !== 10 || !/^[6-9]/.test(phone)) {
+      document.getElementById('phoneError').style.display = 'block';
+      document.getElementById('phoneInput').closest('.form-group').classList.add('shake');
+      setTimeout(() => document.getElementById('phoneInput').closest('.form-group').classList.remove('shake'), 500);
+      return;
+    }
+    rippleEffect(e);
+    document.getElementById('displayPhone').textContent = '+91 ' + phone.substring(0,5) + 'XXXXX';
+    setTimeout(() => {
+      goStep(2);
+      startTimer();
+      document.getElementById('otp1').focus();
+    }, 300);
+  }
+
+  function startTimer() {
+    let t = 30;
+    clearInterval(timerInterval);
+    document.getElementById('resendTimer').style.display = 'inline';
+    document.getElementById('resendBtn').style.display = 'none';
+    timerInterval = setInterval(() => {
+      t--;
+      document.getElementById('timerCount').textContent = t + 's';
+      if (t <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById('resendTimer').style.display = 'none';
+        document.getElementById('resendBtn').style.display = 'inline';
+      }
+    }, 1000);
+  }
+
+  function resendOTP() {
+    document.getElementById('resendBtn').style.display = 'none';
+    startTimer();
+    document.getElementById('otp1').value='';document.getElementById('otp2').value='';
+    document.getElementById('otp3').value='';document.getElementById('otp4').value='';
+    document.getElementById('otp1').focus();
+  }
+
+  function otpInput(el, nextId) {
+    if (el.value && nextId) document.getElementById(nextId).focus();
+    if (!nextId && el.value) {
+      const otp = ['otp1','otp2','otp3','otp4'].map(id => document.getElementById(id).value).join('');
+      if (otp.length === 4) setTimeout(() => verifyOTP({}), 200);
+    }
+  }
+
+  function otpBack(e, el, prevId) {
+    if (e.key === 'Backspace' && !el.value && prevId) document.getElementById(prevId).focus();
+  }
+
+  function verifyOTP(e) {
+    const otp = ['otp1','otp2','otp3','otp4'].map(id => document.getElementById(id).value).join('');
+    if (otp === '1234') {
+      rippleEffect(e);
+      clearInterval(timerInterval);
+      setTimeout(() => goStep(3), 300);
+    } else {
+      document.getElementById('otp1').closest('.otp-grid').classList.add('shake');
+      setTimeout(() => document.getElementById('otp1').closest('.otp-grid').classList.remove('shake'), 500);
+      ['otp1','otp2','otp3','otp4'].forEach(id => document.getElementById(id).style.borderColor = '#E74C3C');
+      setTimeout(() => ['otp1','otp2','otp3','otp4'].forEach(id => document.getElementById(id).style.borderColor = ''), 1500);
+    }
+  }
+
+  function selectBiz(el, type) {
+    document.querySelectorAll('.biz-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedBiz = type;
+    const btn = document.getElementById('bizContinueBtn');
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  }
+
+  function completeBiz(e) {
+    if (!selectedBiz) return;
+    rippleEffect(e);
+    setTimeout(() => goStep(4), 300);
+  }
+
+  function toggleMode() {
+    const btn = document.querySelector('.toggle-auth button');
+    btn.textContent = btn.textContent.includes('Login') ? 'Register karo →' : 'Login karo →';
+    document.querySelector('.step-title').textContent = btn.textContent.includes('Login') ? '📱 Mobile Number Daalo' : '📱 Register Karo';
+  }
+
+  function rippleEffect(e) {
+    if (!e.currentTarget) return;
+    const btn = e.currentTarget;
+    const rect = btn.getBoundingClientRect();
+    const x = (e.clientX || rect.left + rect.width/2) - rect.left - 30;
+    const y = (e.clientY || rect.top + rect.height/2) - rect.top - 30;
+    const ripple = document.createElement('div');
+    ripple.className = 'ripple-circle';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  }
+
+  // ===== VOICE BIOMETRIC =====
+  function voiceSignIn() {
+    const modal = document.getElementById('voiceModal');
+    const status = document.getElementById('voiceStatus');
+    const orb = document.getElementById('micOrb');
+    modal.classList.add('open');
+    status.textContent = '🎤 सुन रहे हैं... / Listening...';
+    orb.textContent = '🎤';
+    orb.style.animation = 'orbGlow 1.5s ease-in-out infinite, micPulse 0.8s ease-in-out infinite';
+    // Step 1: listening (2s)
+    setTimeout(() => {
+      status.textContent = '🧠 AI Analyzing Voice Pattern...';
+      status.style.color = '#BF7FEF';
+      orb.style.animation = 'orbGlow 0.6s ease-in-out infinite';
+    }, 2000);
+    // Step 2: match found (3.5s)
+    setTimeout(() => {
+      status.innerHTML = '✅ आवाज़ मान्य हुई! / Voice Verified!';
+      status.style.color = '#2ECC71';
+      orb.textContent = '✅';
+      orb.style.background = 'radial-gradient(circle at 35% 35%, rgba(46,204,113,0.5), rgba(39,174,96,0.2))';
+      orb.style.borderColor = 'rgba(46,204,113,0.5)';
+      orb.style.animation = 'none';
+      orb.style.boxShadow = '0 0 40px rgba(46,204,113,0.5), 0 0 80px rgba(46,204,113,0.3)';
+    }, 3500);
+    // Step 3: redirect (5s)
+    setTimeout(() => {
+      modal.classList.remove('open');
+      goStep(3); // skip to business type since voice = already verified
+    }, 5000);
+  }
+
+  function closeVoiceModal() {
+    document.getElementById('voiceModal').classList.remove('open');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features — Logistey | Inventory, Orders, Billing sab ek jagah</title>
+  <meta name="description" content="Logistey ke features: Inventory tracking, order management, delivery tracking, customer chat aur GST billing — sab ek simple chat interface mein." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero {
+      background: linear-gradient(160deg, var(--dark) 0%, var(--dark-mid) 100%);
+      padding: calc(var(--nav-height) + 80px) 0 80px;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(circle, rgba(196,98,45,0.2) 0%, transparent 70%);
+    }
+    .page-hero .section-title { color: white; }
+    .page-hero .section-subtitle { color: rgba(255,255,255,0.7); margin: 0 auto; }
+
+    /* Feature Sections */
+    .feature-section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .feature-section:last-of-type { border-bottom: none; }
+    .feature-section:nth-child(even) { background: white; }
+    .feature-section:nth-child(odd) { background: var(--cream); }
+
+    .feat-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .feat-layout.reverse { direction: rtl; }
+    .feat-layout.reverse > * { direction: ltr; }
+
+    .feat-content .section-label { margin-bottom: 12px; }
+    .feat-content .section-title { margin-bottom: 12px; }
+
+    .feat-list {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .feat-list-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .feat-list-check {
+      width: 24px; height: 24px;
+      background: rgba(196,98,45,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .feat-list-item span {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .feat-list-item strong { color: var(--dark); }
+
+    /* UI Demo Panels */
+    .demo-panel {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .inventory-table {
+      width: 100%;
+      font-size: 0.88rem;
+    }
+
+    .inventory-table th {
+      text-align: left;
+      padding: 8px 12px;
+      background: var(--cream);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .inventory-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .inventory-table tr:last-child td { border-bottom: none; }
+
+    .stock-bar {
+      height: 6px;
+      background: var(--cream-dark);
+      border-radius: 3px;
+      overflow: hidden;
+      width: 80px;
+    }
+
+    .stock-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    /* Order Card */
+    .order-card-mini {
+      background: var(--cream);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: var(--transition);
+    }
+
+    .order-card-mini:hover { border-color: var(--primary); }
+
+    .order-num {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.88rem;
+    }
+
+    .order-items { flex: 1; font-size: 0.88rem; color: var(--text-muted); }
+    .order-amount { font-weight: 700; color: var(--dark); }
+
+    /* Split Chat-Dashboard */
+    .split-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .chat-panel {
+      background: var(--cream);
+      padding: 20px;
+    }
+
+    .chat-panel-header {
+      background: var(--dark);
+      color: white;
+      padding: 12px 16px;
+      margin: -20px -20px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .dashboard-panel {
+      background: white;
+      padding: 20px;
+      border-left: 1px solid var(--border);
+    }
+
+    /* Delivery timeline */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 9px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -20px; top: 4px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid var(--cream);
+    }
+
+    .timeline-item.inactive::before { background: var(--border); }
+
+    .timeline-title { font-weight: 600; font-size: 0.88rem; color: var(--dark); }
+    .timeline-time  { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Billing preview */
+    .bill-preview {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      font-size: 0.85rem;
+    }
+
+    .bill-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 16px 20px;
+    }
+
+    .bill-body { padding: 16px 20px; }
+
+    .bill-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bill-row:last-child { border-bottom: none; }
+    .bill-total { font-weight: 800; color: var(--dark); font-size: 1rem; }
+
+    @media (max-width: 768px) {
+      .feat-layout, .feat-layout.reverse { grid-template-columns: 1fr; direction: ltr; }
+      .split-demo { grid-template-columns: 1fr; }
+      .dashboard-panel { border-left: none; border-top: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">📦</div>
+      Logis<span>tey</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html" class="active">Features</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="demo.html" class="btn btn-secondary btn-sm">Try Demo</a>
+      <a href="pricing.html" class="btn btn-primary btn-sm">Start Free</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a>
+  <a href="about.html">About</a><a href="contact.html">Contact</a><a href="demo.html">🧪 Try Demo</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero grain-bg">
+  <div class="container" style="position:relative;z-index:1">
+    <span class="section-label fade-up" style="background:rgba(196,98,45,0.2);color:var(--primary-light)">🛠️ Features</span>
+    <h1 class="section-title fade-up delay-1" style="color:white;margin-top:16px">Woh sab jo aapke business ko<br /><span style="color:var(--primary-light)">actually chahiye</span></h1>
+    <p class="section-subtitle fade-up delay-2">No fluff. No extra features you'll never use. Sirf woh tools jo ek Kirana se lekar ek wholesaler tak ke liye kaam ke hain.</p>
+    <div style="margin-top:36px" class="fade-up delay-3">
+      <a href="demo.html" class="btn btn-primary btn-lg">Live Demo Dekho →</a>
+    </div>
+  </div>
+</section>
+
+<!-- === FEATURE 1: INVENTORY === -->
+<section class="feature-section">
+  <div class="container">
+    <div class="feat-layout">
+      <div class="feat-content fade-up">
+        <span class="section-label">📦 Feature 1</span>
+        <h2 class="section-title">Inventory Management<br /><span class="highlight">Chat se karo</span></h2>
+        <p class="section-subtitle">Register ya Excel ki zaroorat nahi. Bas message karo aur Logistey real-time stock update kar dega.</p>
+
+        <div class="feat-list">
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span><strong>"Maggi kitna hai?"</strong> — instant answer, kabhi bhi</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Low stock alert automatically — reorder ka reminder</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Categories: FMCG, grains, electronics — sab organize</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Multiple godown / warehouse support</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Expiry date tracking — waste avoid karo</span>
+          </div>
+        </div>
+
+        <div style="margin-top:28px">
+          <a href="demo.html" class="btn btn-primary">Try it live →</a>
+        </div>
+      </div>
+
+      <div class="fade-up delay-2">
+        <div class="demo-panel">
+          <div class="panel-header">
+            <span class="panel-title">📦 Stock Dashboard</span>
+            <span class="badge badge-green">● Live</span>
+          </div>
+          <table class="inventory-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Level</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Maggi 2-Min</strong></td>
+                <td>42 boxes</td>
+                <td><span class="badge badge-yellow">⚠ Low</span></td>
+                <td><div class="stock-bar"><div class="stock-bar-fill" style="width:30%;background:var(--warning)"></div></div></td>
+              </tr>
+              <tr>
+                <td><strong>Parle Biscuit</strong></td>
+                <td>8 boxes</td>
+                <td><span class="badge badge-red">🔴 Critical</span></td>
+                <td><div class="stock-bar"><div class="stock-bar-fill" style="width:10%;background:var(--danger)"></div></div></td>
+              </tr>
+              <tr>
+                <td><strong>Tata Salt 1kg</strong></td>
+                <td>230 pcs</td>
+                <td><span class="badge badge-green">✓ Good</span></td>
+                <td><div class="stock-bar"><div class="stock-bar-fill" style="width:80%;background:var(--success)"></div></div></td>
+              </tr>
+              <tr>
+                <td><strong>Amul Butter 500g</strong></td>
+                <td>65 pcs</td>
+                <td><span class="badge badge-green">✓ Good</span></td>
+                <td><div class="stock-bar"><div class="stock-bar-fill" style="width:55%;background:var(--success)"></div></div></td>
+              </tr>
+              <tr>
+                <td><strong>Basmati Rice 5kg</strong></td>
+                <td>18 bags</td>
+                <td><span class="badge badge-yellow">⚠ Low</span></td>
+                <td><div class="stock-bar"><div class="stock-bar-fill" style="width:25%;background:var(--warning)"></div></div></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="background:rgba(196,98,45,0.06);border-radius:var(--radius-sm);padding:12px;margin-top:16px;font-size:0.85rem;border:1px solid rgba(196,98,45,0.15)">
+            💬 <em>"Maggi kitna bacha hai?"</em> → <strong>"42 boxes — reorder karein?"</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === FEATURE 2: ORDER MANAGEMENT === -->
+<section class="feature-section">
+  <div class="container">
+    <div class="feat-layout reverse">
+      <div class="feat-content fade-up">
+        <span class="section-label">🛒 Feature 2</span>
+        <h2 class="section-title">Order Management<br /><span class="highlight">Message se order</span></h2>
+        <p class="section-subtitle">Customer ka order aaya? Bas ek message — Logistey automatically entry karega, stock update karega, aur tracking shuru ho jayegi.</p>
+
+        <div class="feat-list">
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span><strong>"50 biscuit ka order bhejo Ramesh ko"</strong> — done!</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Automatic stock deduction on order creation</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Customer ko automatic confirmation message</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Bulk orders, partial delivery — sab handle hota hai</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Order history — customer-wise, product-wise search</span>
+          </div>
+        </div>
+        <div style="margin-top:28px">
+          <a href="demo.html" class="btn btn-primary">Demo dekho →</a>
+        </div>
+      </div>
+
+      <div class="fade-up delay-2">
+        <div class="demo-panel">
+          <div class="panel-header">
+            <span class="panel-title">🛒 Recent Orders</span>
+            <a href="demo.html" class="btn btn-primary btn-sm">+ New Order</a>
+          </div>
+
+          <div class="order-card-mini">
+            <div style="font-size:1.5rem">🟢</div>
+            <div class="order-items">
+              <div class="order-num">#ORD-1042</div>
+              <div>Parle Biscuit × 50 | Tata Salt × 30</div>
+              <div style="font-size:0.78rem;color:var(--text-muted)">Ramesh Kirana, Bhiwandi</div>
+            </div>
+            <div class="order-amount">₹2,840</div>
+          </div>
+
+          <div class="order-card-mini">
+            <div style="font-size:1.5rem">🟡</div>
+            <div class="order-items">
+              <div class="order-num">#ORD-1041</div>
+              <div>Maggi × 100 | Amul Butter × 20</div>
+              <div style="font-size:0.78rem;color:var(--text-muted)">Sunita Stores, Pune</div>
+            </div>
+            <div class="order-amount">₹7,200</div>
+          </div>
+
+          <div class="order-card-mini">
+            <div style="font-size:1.5rem">🟠</div>
+            <div class="order-items">
+              <div class="order-num">#ORD-1040</div>
+              <div>Basmati Rice × 10 bags</div>
+              <div style="font-size:0.78rem;color:var(--text-muted)">Mahesh Distributor, Nagpur</div>
+            </div>
+            <div class="order-amount">₹4,500</div>
+          </div>
+
+          <div style="background:rgba(196,98,45,0.06);border-radius:var(--radius-sm);padding:12px;margin-top:4px;font-size:0.85rem;border:1px solid rgba(196,98,45,0.15)">
+            💬 <em>"50 biscuit ka order bhejo"</em> → <strong>"Order #1043 created ✅"</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === FEATURE 3: DELIVERY TRACKING === -->
+<section class="feature-section">
+  <div class="container">
+    <div class="feat-layout">
+      <div class="feat-content fade-up">
+        <span class="section-label">🚚 Feature 3</span>
+        <h2 class="section-title">Delivery Tracking<br /><span class="highlight">Live status</span></h2>
+        <p class="section-subtitle">Customer ne poochha "mera order kahan hai?" — Logistey instant delivery update dega. Koi phone calls nahi, koi confusion nahi.</p>
+
+        <div class="feat-list">
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span><strong>"Order kahan hai?"</strong> — instant status update</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Driver location + estimated delivery time</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Automatic delivery confirmation — photo proof</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Customer ko WhatsApp update jab dispatch ho</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Delivery failure alert — re-schedule option</span>
+          </div>
+        </div>
+        <div style="margin-top:28px">
+          <a href="demo.html" class="btn btn-primary">Try it →</a>
+        </div>
+      </div>
+
+      <div class="fade-up delay-2">
+        <div class="demo-panel">
+          <div class="panel-header">
+            <span class="panel-title">🚚 Order #ORD-1042 Tracking</span>
+            <span class="badge badge-yellow">In Transit</span>
+          </div>
+
+          <div style="background:var(--cream);border-radius:var(--radius-md);padding:16px;margin-bottom:20px;font-size:0.88rem">
+            <div style="font-weight:700;margin-bottom:4px">Ramesh Kirana, Bhiwandi</div>
+            <div style="color:var(--text-muted)">Parle Biscuit × 50 | Tata Salt × 30</div>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-title">✅ Order Confirmed</div>
+              <div class="timeline-time">Today, 9:00 AM</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-title">✅ Packing Done</div>
+              <div class="timeline-time">Today, 10:30 AM</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-title">🚚 Dispatched — Driver Raju</div>
+              <div class="timeline-time">Today, 11:45 AM</div>
+            </div>
+            <div class="timeline-item inactive">
+              <div class="timeline-title" style="color:var(--text-muted)">Delivery Expected</div>
+              <div class="timeline-time">Tomorrow, 2:00 PM</div>
+            </div>
+          </div>
+
+          <div style="background:rgba(196,98,45,0.06);border-radius:var(--radius-sm);padding:12px;margin-top:8px;font-size:0.85rem;border:1px solid rgba(196,98,45,0.15)">
+            💬 <em>"Order kahan hai?"</em> → <strong>"Kal delivery expected hai, driver Raju ke saath"</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === FEATURE 4: CUSTOMER CHAT === -->
+<section class="feature-section">
+  <div class="container">
+    <div class="feat-layout reverse">
+      <div class="feat-content fade-up">
+        <span class="section-label">💬 Feature 4</span>
+        <h2 class="section-title">Customer Communication<br /><span class="highlight">WhatsApp style</span></h2>
+        <p class="section-subtitle">Familiar WhatsApp-style chat — customers ko kuch naya seekhne ki zaroorat nahi. Auto-replies se customer khush, aur aapka time bachta hai.</p>
+
+        <div class="feat-list">
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>WhatsApp integration — seedha customers ke phone pe</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Automatic order acknowledgement aur updates</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Personalized — "Ramesh bhai" jaise address</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Promotional messages / offers broadcast</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Hindi + English — customer ki bhasha mein</span>
+          </div>
+        </div>
+        <div style="margin-top:28px">
+          <a href="demo.html" class="btn btn-primary">Chat try karo →</a>
+        </div>
+      </div>
+
+      <div class="fade-up delay-2">
+        <div class="split-demo">
+          <div class="chat-panel">
+            <div class="chat-panel-header">
+              <span>💬</span> Logistey Chat
+            </div>
+            <div class="chat-bubble bot">
+              <div class="bubble-avatar bot">G</div>
+              <div class="bubble-text">Namaste Ramesh bhai! 🙏</div>
+            </div>
+            <div class="chat-bubble user">
+              <div class="bubble-avatar user-av">R</div>
+              <div class="bubble-text">Mera last order kab aayega?</div>
+            </div>
+            <div class="chat-bubble bot">
+              <div class="bubble-avatar bot">G</div>
+              <div class="bubble-text">Ramesh bhai, aapka order #1042 kal 2 baje tak deliver ho jayega 🚚</div>
+            </div>
+            <div class="chat-bubble user">
+              <div class="bubble-avatar user-av">R</div>
+              <div class="bubble-text">50 aur biscuit chahiye</div>
+            </div>
+            <div class="chat-bubble bot">
+              <div class="bubble-avatar bot">G</div>
+              <div class="bubble-text">Order create ho gaya ✅ #ORD-1045 — Parle Biscuit × 50</div>
+            </div>
+          </div>
+          <div class="dashboard-panel">
+            <div style="font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:12px">Customer Info</div>
+            <div style="font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:4px">Ramesh Sakharkar</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px">📍 Bhiwandi | Since 2022</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="background:var(--cream);border-radius:var(--radius-sm);padding:10px">
+                <div style="font-size:0.75rem;color:var(--text-muted)">Total Orders</div>
+                <div style="font-weight:800;color:var(--dark)">124</div>
+              </div>
+              <div style="background:var(--cream);border-radius:var(--radius-sm);padding:10px">
+                <div style="font-size:0.75rem;color:var(--text-muted)">Total Value</div>
+                <div style="font-weight:800;color:var(--primary)">₹1.8L</div>
+              </div>
+              <div style="background:var(--cream);border-radius:var(--radius-sm);padding:10px">
+                <div style="font-size:0.75rem;color:var(--text-muted)">Last Order</div>
+                <div style="font-weight:600;color:var(--dark);font-size:0.88rem">Today</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === FEATURE 5: BILLING === -->
+<section class="feature-section">
+  <div class="container">
+    <div class="feat-layout">
+      <div class="feat-content fade-up">
+        <span class="section-label">🧾 Feature 5</span>
+        <h2 class="section-title">Smart Billing<br /><span class="highlight">GST-ready</span></h2>
+        <p class="section-subtitle">Bill banana ab ek message ka kaam. GST-ready invoices, automatic calculation, PDF download — aur WhatsApp pe seedha share.</p>
+
+        <div class="feat-list">
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span><strong>"Bill bana do #ORD-1042"</strong> — instant PDF ready</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>GST calculation automatic — 5%, 12%, 18% sab</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Professional invoice — aapka logo, details</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>WhatsApp pe seedha share karo</span>
+          </div>
+          <div class="feat-list-item">
+            <div class="feat-list-check">✓</div>
+            <span>Monthly billing report — tax filing easy</span>
+          </div>
+        </div>
+        <div style="margin-top:28px">
+          <a href="pricing.html" class="btn btn-primary">Plans dekho →</a>
+        </div>
+      </div>
+
+      <div class="fade-up delay-2">
+        <div class="demo-panel">
+          <div class="panel-header">
+            <span class="panel-title">🧾 Invoice Preview</span>
+            <div style="display:flex;gap:8px">
+              <span class="badge badge-green">✓ GST Ready</span>
+            </div>
+          </div>
+
+          <div class="bill-preview">
+            <div class="bill-header">
+              <div style="font-size:1.1rem;font-weight:800;margin-bottom:4px">Logistey Invoice</div>
+              <div style="font-size:0.8rem;opacity:0.8">#INV-2024-1042 | 12 Apr 2024</div>
+            </div>
+            <div class="bill-body">
+              <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);margin-bottom:12px">
+                <div><strong style="color:var(--dark)">Bill To:</strong><br />Ramesh Sakharkar<br />Bhiwandi, MH</div>
+                <div style="text-align:right"><strong style="color:var(--dark)">GSTIN:</strong><br />27XXXXX1234Z1ZX</div>
+              </div>
+              <div class="bill-row">
+                <span>Parle Biscuit × 50</span>
+                <span>₹1,500</span>
+              </div>
+              <div class="bill-row">
+                <span>Tata Salt 1kg × 30</span>
+                <span>₹840</span>
+              </div>
+              <div class="bill-row">
+                <span style="color:var(--text-muted)">Subtotal</span>
+                <span>₹2,340</span>
+              </div>
+              <div class="bill-row">
+                <span style="color:var(--text-muted)">GST 5%</span>
+                <span>₹117</span>
+              </div>
+              <div class="bill-row">
+                <span class="bill-total">Total</span>
+                <span class="bill-total">₹2,457</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:16px">
+            <button class="btn btn-primary btn-sm" style="flex:1">📥 Download PDF</button>
+            <button class="btn btn-secondary btn-sm" style="flex:1">📲 WhatsApp Share</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section grain-bg">
+  <div class="container" style="position:relative;z-index:1">
+    <h2 class="section-title fade-up" style="color:white">Ye sab aapke business ke liye ready hai</h2>
+    <p class="section-subtitle fade-up delay-1" style="color:rgba(255,255,255,0.8);margin:0 auto 40px">Start free — no setup, no training needed. Abhi demo try karo.</p>
+    <div class="cta-buttons fade-up delay-2">
+      <a href="demo.html" class="btn btn-white btn-lg">🧪 Free Demo</a>
+      <a href="pricing.html" class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:white;border:2px solid rgba(255,255,255,0.35)">💰 Pricing Dekho</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo"><div class="logo-icon">📦</div>Logis<span style="color:var(--primary-light)">tey</span></div>
+        <p>India ke chhote aur medium businesses ke liye banaya gaya AI assistant.</p>
+      </div>
+      <div class="footer-col"><h4>Pages</h4><ul><li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="demo.html">Demo</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="#">Privacy</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="https://wa.me/919999999999">💬 WhatsApp</a></li><li><a href="tel:+919999999999">📞 +91 99999 99999</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Logistey. Made with ❤️ for Indian businesses.</span>
+      <span>"Inventory ka tension khatam" 📦</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('open'));
+  const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
