@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logistey — Live Dashboard</title>
   <meta name="description" content="Logistey live warehouse dashboard — real inventory, orders, and call data." />
+  <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <style>
     :root {
       --primary: #C4622D;
@@ -28,10 +31,16 @@
       --sidebar-w: 230px;
       --topbar-h: 56px;
       --radius: 14px;
-      --shadow: 0 2px 16px rgba(44,24,16,0.08);
+      --shadow: 0 2px 16px rgba(44, 24, 16, 0.08);
     }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Outfit', sans-serif;
@@ -59,7 +68,7 @@
       align-items: center;
       gap: 10px;
       padding: 20px 20px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .sidebar-logo span {
@@ -70,17 +79,20 @@
     }
 
     .sidebar-logo .logo-icon {
-      width: 36px; height: 36px;
+      width: 36px;
+      height: 36px;
       background: var(--primary);
       border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 1.2rem;
     }
 
     .live-badge {
       margin: 12px 20px;
-      background: rgba(46,204,113,0.15);
-      border: 1px solid rgba(46,204,113,0.3);
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px solid rgba(46, 204, 113, 0.3);
       border-radius: 8px;
       padding: 8px 12px;
       display: flex;
@@ -92,27 +104,37 @@
     }
 
     .live-dot {
-      width: 8px; height: 8px;
+      width: 8px;
+      height: 8px;
       background: #2ECC71;
       border-radius: 50%;
       animation: pulse 1.5s infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+      }
     }
 
     .nav-section {
       padding: 12px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .nav-label {
       font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 1.2px;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255, 255, 255, 0.3);
       text-transform: uppercase;
       padding: 4px 20px 8px;
     }
@@ -127,13 +149,26 @@
       transition: all 0.18s;
       font-size: 0.9rem;
       font-weight: 500;
-      color: rgba(255,255,255,0.65);
+      color: rgba(255, 255, 255, 0.65);
       border-left: 3px solid transparent;
     }
 
-    .nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
-    .nav-item.active { background: rgba(196,98,45,0.2); color: white; border-left-color: var(--primary); }
-    .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: white;
+    }
+
+    .nav-item.active {
+      background: rgba(196, 98, 45, 0.2);
+      color: white;
+      border-left-color: var(--primary);
+    }
+
+    .nav-item .icon {
+      font-size: 1rem;
+      width: 20px;
+      text-align: center;
+    }
 
     /* ── MAIN AREA ── */
     .main {
@@ -154,10 +189,23 @@
       flex-shrink: 0;
     }
 
-    .topbar-title { font-size: 1rem; font-weight: 700; color: var(--dark); }
-    .topbar-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
+    .topbar-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
 
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
     .refresh-btn {
       background: var(--primary);
@@ -171,7 +219,10 @@
       font-family: 'Outfit', sans-serif;
       transition: background 0.18s;
     }
-    .refresh-btn:hover { background: var(--primary-dark); }
+
+    .refresh-btn:hover {
+      background: var(--primary-dark);
+    }
 
     .content {
       flex: 1;
@@ -180,8 +231,13 @@
     }
 
     /* ── SECTIONS ── */
-    .section { display: none; }
-    .section.active { display: block; }
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
 
     /* ── STAT CARDS ── */
     .stats-grid {
@@ -204,7 +260,9 @@
     .stat-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 3px;
       background: var(--primary);
       border-radius: var(--radius) var(--radius) 0 0;
@@ -234,7 +292,8 @@
 
     .stat-icon {
       position: absolute;
-      top: 16px; right: 16px;
+      top: 16px;
+      right: 16px;
       font-size: 1.6rem;
       opacity: 0.15;
     }
@@ -274,7 +333,11 @@
     }
 
     /* ── TABLE ── */
-    table { width: 100%; border-collapse: collapse; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
     th {
       background: var(--secondary);
       padding: 10px 16px;
@@ -285,19 +348,47 @@
       letter-spacing: 0.6px;
       color: var(--text-muted);
     }
+
     td {
       padding: 12px 16px;
       font-size: 0.87rem;
       border-bottom: 1px solid var(--secondary);
     }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #faf5f0; }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #faf5f0;
+    }
 
     /* ── INVENTORY ITEM ── */
-    .inv-emoji { font-size: 1.4rem; margin-right: 10px; }
-    .inv-name { font-weight: 700; color: var(--dark); text-transform: capitalize; }
-    .qty-bar-wrap { background: var(--secondary); border-radius: 99px; height: 6px; width: 120px; overflow: hidden; }
-    .qty-bar { height: 100%; border-radius: 99px; background: var(--primary); transition: width 0.6s ease; }
+    .inv-emoji {
+      font-size: 1.4rem;
+      margin-right: 10px;
+    }
+
+    .inv-name {
+      font-weight: 700;
+      color: var(--dark);
+      text-transform: capitalize;
+    }
+
+    .qty-bar-wrap {
+      background: var(--secondary);
+      border-radius: 99px;
+      height: 6px;
+      width: 120px;
+      overflow: hidden;
+    }
+
+    .qty-bar {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--primary);
+      transition: width 0.6s ease;
+    }
 
     /* ── BADGES ── */
     .badge {
@@ -309,14 +400,46 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .badge-pending   { background: #FEF3C7; color: #92400E; }
-    .badge-confirmed { background: #DBEAFE; color: #1E40AF; }
-    .badge-dispatched { background: #D1FAE5; color: #065F46; }
-    .badge-out_for_delivery { background: #ECFDF5; color: #065F46; }
-    .badge-delivered { background: #D1FAE5; color: #065F46; }
-    .badge-cancelled { background: #FEE2E2; color: #991B1B; }
-    .badge-low       { background: #FEE2E2; color: #991B1B; }
-    .badge-ok        { background: #D1FAE5; color: #065F46; }
+
+    .badge-pending {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .badge-confirmed {
+      background: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .badge-dispatched {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+
+    .badge-out_for_delivery {
+      background: #ECFDF5;
+      color: #065F46;
+    }
+
+    .badge-delivered {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+
+    .badge-cancelled {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+
+    .badge-low {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+
+    .badge-ok {
+      background: #D1FAE5;
+      color: #065F46;
+    }
 
     /* ── CALL LOG ── */
     .intent-badge {
@@ -326,15 +449,51 @@
       font-size: 0.7rem;
       font-weight: 700;
     }
-    .intent-order_placed    { background: #D1FAE5; color: #065F46; }
-    .intent-stock_query     { background: #DBEAFE; color: #1E40AF; }
-    .intent-price_offer     { background: #FEF3C7; color: #92400E; }
-    .intent-deal_confirm    { background: #EDE9FE; color: #5B21B6; }
-    .intent-stock_arrival   { background: #D1FAE5; color: #065F46; }
-    .intent-order_status    { background: #FEF3C7; color: #92400E; }
-    .intent-delivery_query  { background: #DBEAFE; color: #1E40AF; }
-    .intent-cancel_order    { background: #FEE2E2; color: #991B1B; }
-    .intent-unknown         { background: #F3F4F6; color: #6B7280; }
+
+    .intent-order_placed {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+
+    .intent-stock_query {
+      background: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .intent-price_offer {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .intent-deal_confirm {
+      background: #EDE9FE;
+      color: #5B21B6;
+    }
+
+    .intent-stock_arrival {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+
+    .intent-order_status {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .intent-delivery_query {
+      background: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .intent-cancel_order {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+
+    .intent-unknown {
+      background: #F3F4F6;
+      color: #6B7280;
+    }
 
     /* ── LOADING ── */
     .loading {
@@ -343,26 +502,51 @@
       color: var(--text-muted);
       font-size: 0.9rem;
     }
+
     .spinner {
       display: inline-block;
-      width: 28px; height: 28px;
+      width: 28px;
+      height: 28px;
       border: 3px solid var(--border);
       border-top-color: var(--primary);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       margin-bottom: 10px;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
     /* ── EMPTY STATE ── */
-    .empty { text-align: center; padding: 40px; color: var(--text-light); }
-    .empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .empty {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-light);
+    }
+
+    .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
 
     /* ── TWO COL ── */
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
 
     /* ── ORDER REF ── */
-    .order-ref { font-family: monospace; font-size: 0.82rem; color: var(--primary); font-weight: 700; }
+    .order-ref {
+      font-family: monospace;
+      font-size: 0.82rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
 
     /* ── ERROR BANNER ── */
     .error-banner {
@@ -378,228 +562,276 @@
 
     /* ── FORMS ── */
     .status-select {
-      background: white; border: 1px solid var(--border); border-radius: 6px; 
-      padding: 4px 8px; font-size: 0.72rem; font-weight: 700; cursor: pointer; 
-      color: var(--text-main); font-family: 'Outfit', sans-serif;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
     }
-    .status-select:hover { border-color: var(--primary); }
+
+    .status-select:hover {
+      border-color: var(--primary);
+    }
   </style>
 </head>
+
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-icon">🏭</div>
-    <span>Logistey</span>
-  </div>
-
-  <div class="live-badge">
-    <div class="live-dot"></div>
-    Connected to Flask API
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-label">Main</div>
-    <div class="nav-item active" onclick="showSection('dashboard', this)">
-      <span class="icon">📊</span> Dashboard
-    </div>
-    <div class="nav-item" onclick="showSection('inventory', this)">
-      <span class="icon">🥬</span> Inventory
-    </div>
-    <div class="nav-item" onclick="showSection('orders', this)">
-      <span class="icon">📦</span> Orders
-    </div>
-    <div class="nav-item" onclick="showSection('calls', this)">
-      <span class="icon">📞</span> Call Logs
-    </div>
-    <div class="nav-item" onclick="showSection('reorders', this)">
-      <span class="icon">🔄</span> Reorders
-    </div>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<div class="main">
-  <div class="topbar">
-    <div>
-      <div class="topbar-title" id="topbar-title">Dashboard</div>
-      <div class="topbar-sub" id="topbar-sub">Live data from your warehouse</div>
-    </div>
-    <div class="topbar-right">
-      <div id="last-updated" style="font-size:0.78rem;color:var(--text-muted)"></div>
-      <button class="refresh-btn" onclick="loadAll()">⟳ Refresh</button>
-    </div>
-  </div>
-
-  <div class="content">
-    <div id="error-banner" class="error-banner">
-      ⚠️ Cannot connect to Flask server at <strong id="api-url-display"></strong>. 
-      Make sure <code>python3 app.py</code> is running and ngrok is active.
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏭</div>
+      <span>Logistey</span>
     </div>
 
-    <!-- ── DASHBOARD ── -->
-    <div id="section-dashboard" class="section active">
-      <div class="stats-grid" id="stats-grid">
-        <div class="loading"><div class="spinner"></div><br>Loading...</div>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      Connected to Flask API
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <div class="nav-item active" onclick="showSection('dashboard', this)">
+        <span class="icon">📊</span> Dashboard
       </div>
-      <div class="two-col">
+      <div class="nav-item" onclick="showSection('inventory', this)">
+        <span class="icon">🥬</span> Inventory
+      </div>
+      <div class="nav-item" onclick="showSection('orders', this)">
+        <span class="icon">📦</span> Orders
+      </div>
+      <div class="nav-item" onclick="showSection('calls', this)">
+        <span class="icon">📞</span> Call Logs
+      </div>
+      <div class="nav-item" onclick="showSection('reorders', this)">
+        <span class="icon">🔄</span> Reorders
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-sub" id="topbar-sub">Live data from your warehouse</div>
+      </div>
+      <div class="topbar-right">
+        <div id="last-updated" style="font-size:0.78rem;color:var(--text-muted)"></div>
+        <button class="refresh-btn" onclick="loadAll()">⟳ Refresh</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="error-banner" class="error-banner">
+        ⚠️ Cannot connect to Flask server at <strong id="api-url-display"></strong>.
+        Make sure <code>python3 app.py</code> is running and ngrok is active.
+      </div>
+
+      <!-- ── DASHBOARD ── -->
+      <div id="section-dashboard" class="section active">
+        <div class="stats-grid" id="stats-grid">
+          <div class="loading">
+            <div class="spinner"></div><br>Loading...
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">🥬 Inventory Status</span>
+              <span class="panel-count" id="inv-count-dash">—</span>
+            </div>
+            <div id="inv-summary-table">
+              <div class="loading">
+                <div class="spinner"></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">📦 Recent Orders</span>
+              <span class="panel-count" id="order-count-dash">—</span>
+            </div>
+            <div id="orders-summary-table">
+              <div class="loading">
+                <div class="spinner"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">🥬 Inventory Status</span>
-            <span class="panel-count" id="inv-count-dash">—</span>
+            <span class="panel-title">📞 Recent Calls</span>
           </div>
-          <div id="inv-summary-table"><div class="loading"><div class="spinner"></div></div></div>
+          <div id="calls-dash-table">
+            <div class="loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- ── INVENTORY ── -->
+      <div id="section-inventory" class="section">
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">📦 Recent Orders</span>
-            <span class="panel-count" id="order-count-dash">—</span>
+            <span class="panel-title">🥬 Vegetable Inventory</span>
+            <span class="panel-count" id="inv-count-full">—</span>
           </div>
-          <div id="orders-summary-table"><div class="loading"><div class="spinner"></div></div></div>
+          <div id="inventory-table">
+            <div class="loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="panel">
-        <div class="panel-header">
-          <span class="panel-title">📞 Recent Calls</span>
+
+      <!-- ── ORDERS ── -->
+      <div id="section-orders" class="section">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">📦 All Orders</span>
+            <span class="panel-count" id="orders-count-full">—</span>
+          </div>
+          <div id="orders-table">
+            <div class="loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
         </div>
-        <div id="calls-dash-table"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- ── CALLS ── -->
+      <div id="section-calls" class="section">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">📞 Call Logs</span>
+          </div>
+          <div id="calls-table">
+            <div class="loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── REORDERS ── -->
+      <div id="section-reorders" class="section">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">🔄 Reorder Log</span>
+          </div>
+          <div id="reorders-table">
+            <div class="loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <script src="cursor.js"></script>
+    <script>
+      // Unregister any stale service workers that may be caching broken pages
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          regs.forEach(reg => reg.unregister());
+        });
+      }
 
-    <!-- ── INVENTORY ── -->
-    <div id="section-inventory" class="section">
-      <div class="panel">
-        <div class="panel-header">
-          <span class="panel-title">🥬 Vegetable Inventory</span>
-          <span class="panel-count" id="inv-count-full">—</span>
-        </div>
-        <div id="inventory-table"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
+      // ── CONFIG ────────────────────────────────────────────
+      // Use relative URLs — Flask serves both the HTML and the API
+      // from the same origin, so "" prefix works locally AND in production.
+      const BASE_URL = "";
 
-    <!-- ── ORDERS ── -->
-    <div id="section-orders" class="section">
-      <div class="panel">
-        <div class="panel-header">
-          <span class="panel-title">📦 All Orders</span>
-          <span class="panel-count" id="orders-count-full">—</span>
-        </div>
-        <div id="orders-table"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
+      const EMOJI = {
+        onions: "🧅", tomatoes: "🍅", rice: "🌾", potatoes: "🥔",
+        lentils: "🫘", wheat: "🌾", default: "📦"
+      };
 
-    <!-- ── CALLS ── -->
-    <div id="section-calls" class="section">
-      <div class="panel">
-        <div class="panel-header">
-          <span class="panel-title">📞 Call Logs</span>
-        </div>
-        <div id="calls-table"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
+      function itemEmoji(item) {
+        return EMOJI[item?.toLowerCase()] || EMOJI.default;
+      }
 
-    <!-- ── REORDERS ── -->
-    <div id="section-reorders" class="section">
-      <div class="panel">
-        <div class="panel-header">
-          <span class="panel-title">🔄 Reorder Log</span>
-        </div>
-        <div id="reorders-table"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
-  </div>
-</div>
+      function fmt(n) {
+        return Number(n || 0).toLocaleString("en-IN");
+      }
 
-<script>
-  // ── CONFIG ────────────────────────────────────────────
-  const BASE_URL = "http://127.0.0.1:5000"; // Change to ngrok URL if opening remotely
+      function fmtCurrency(n) {
+        return "₹" + fmt(Math.round(n || 0));
+      }
 
-  const EMOJI = {
-    onions: "🧅", tomatoes: "🍅", rice: "🌾", potatoes: "🥔",
-    lentils: "🫘", wheat: "🌾", default: "📦"
-  };
+      function timeAgo(ts) {
+        if (!ts) return "—";
+        const d = new Date(ts.replace(" ", "T"));
+        const diff = Math.floor((Date.now() - d) / 1000);
+        if (diff < 60) return `${diff}s ago`;
+        if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+        if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+        return d.toLocaleDateString("en-IN");
+      }
 
-  function itemEmoji(item) {
-    return EMOJI[item?.toLowerCase()] || EMOJI.default;
-  }
+      function badgeOrder(status) {
+        return `<span class="badge badge-${status}">${(status || "").replace(/_/g, " ")}</span>`;
+      }
 
-  function fmt(n) {
-    return Number(n || 0).toLocaleString("en-IN");
-  }
+      function badgeIntent(intent) {
+        return `<span class="intent-badge intent-${intent}">${(intent || "unknown").replace(/_/g, " ")}</span>`;
+      }
 
-  function fmtCurrency(n) {
-    return "₹" + fmt(Math.round(n || 0));
-  }
+      // ── NAVIGATION ────────────────────────────────────────
+      const titles = {
+        dashboard: ["Dashboard", "Live overview of your warehouse"],
+        inventory: ["Inventory", "Live vegetable stock levels"],
+        orders: ["Orders", "All customer orders"],
+        calls: ["Call Logs", "Voice call history"],
+        reorders: ["Reorders", "Automated supplier reorder log"],
+      };
 
-  function timeAgo(ts) {
-    if (!ts) return "—";
-    const d = new Date(ts.replace(" ", "T"));
-    const diff = Math.floor((Date.now() - d) / 1000);
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
-    return d.toLocaleDateString("en-IN");
-  }
+      function showSection(name, el) {
+        document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+        document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+        document.getElementById("section-" + name).classList.add("active");
+        if (el) el.classList.add("active");
+        const [t, s] = titles[name] || ["Logistey", ""];
+        document.getElementById("topbar-title").textContent = t;
+        document.getElementById("topbar-sub").textContent = s;
+      }
 
-  function badgeOrder(status) {
-    return `<span class="badge badge-${status}">${(status||"").replace(/_/g," ")}</span>`;
-  }
+      // ── API FETCH ─────────────────────────────────────────
+      async function api(path) {
+        const res = await fetch(BASE_URL + path);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      }
 
-  function badgeIntent(intent) {
-    return `<span class="intent-badge intent-${intent}">${(intent||"unknown").replace(/_/g," ")}</span>`;
-  }
+      function showError(msg) {
+        const b = document.getElementById("error-banner");
+        document.getElementById("api-url-display").textContent = BASE_URL;
+        b.style.display = "block";
+      }
 
-  // ── NAVIGATION ────────────────────────────────────────
-  const titles = {
-    dashboard: ["Dashboard", "Live overview of your warehouse"],
-    inventory: ["Inventory", "Live vegetable stock levels"],
-    orders: ["Orders", "All customer orders"],
-    calls: ["Call Logs", "Voice call history"],
-    reorders: ["Reorders", "Automated supplier reorder log"],
-  };
+      async function updateOrderStatus(orderRef, status) {
+        try {
+          await fetch(`${BASE_URL}/api/orders/${orderRef}/status`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status })
+          });
+          loadAll();
+        } catch (e) {
+          alert("Failed to update status: " + e.message);
+        }
+      }
 
-  function showSection(name, el) {
-    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-    document.getElementById("section-" + name).classList.add("active");
-    if (el) el.classList.add("active");
-    const [t, s] = titles[name] || ["Logistey", ""];
-    document.getElementById("topbar-title").textContent = t;
-    document.getElementById("topbar-sub").textContent = s;
-  }
+      // ── RENDER FUNCTIONS ──────────────────────────────────
 
-  // ── API FETCH ─────────────────────────────────────────
-  async function api(path) {
-    const res = await fetch(BASE_URL + path);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-  }
-
-  function showError(msg) {
-    const b = document.getElementById("error-banner");
-    document.getElementById("api-url-display").textContent = BASE_URL;
-    b.style.display = "block";
-  }
-
-  async function updateOrderStatus(orderRef, status) {
-    try {
-      await fetch(`${BASE_URL}/api/orders/${orderRef}/status`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status })
-      });
-      loadAll();
-    } catch (e) {
-      alert("Failed to update status: " + e.message);
-    }
-  }
-
-  // ── RENDER FUNCTIONS ──────────────────────────────────
-
-  function renderStats(stats) {
-    const g = document.getElementById("stats-grid");
-    g.innerHTML = `
+      function renderStats(stats) {
+        const g = document.getElementById("stats-grid");
+        g.innerHTML = `
       <div class="stat-card">
         <div class="stat-label">Total Orders</div>
         <div class="stat-value">${fmt(stats.total_orders)}</div>
@@ -626,19 +858,19 @@
         <div class="stat-sub">${stats.top_selling_item ? fmt(stats.top_selling_item.total) + " kg sold" : ""}</div>
         <div class="stat-icon">🏆</div>
       </div>`;
-  }
+      }
 
-  function renderInventoryTable(inv, containerId, short = false) {
-    const el = document.getElementById(containerId);
-    if (!inv || inv.length === 0) {
-      el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div>No inventory data</div>`;
-      return;
-    }
-    const maxQty = Math.max(...inv.map(i => Math.max(i.quantity, 0)));
-    const rows = (short ? inv.slice(0, 6) : inv).map(item => {
-      const low = item.quantity <= 100;
-      const pct = maxQty > 0 ? Math.max(0, (item.quantity / maxQty) * 100) : 0;
-      return `<tr>
+      function renderInventoryTable(inv, containerId, short = false) {
+        const el = document.getElementById(containerId);
+        if (!inv || inv.length === 0) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div>No inventory data</div>`;
+          return;
+        }
+        const maxQty = Math.max(...inv.map(i => Math.max(i.quantity, 0)));
+        const rows = (short ? inv.slice(0, 6) : inv).map(item => {
+          const low = item.quantity <= 100;
+          const pct = maxQty > 0 ? Math.max(0, (item.quantity / maxQty) * 100) : 0;
+          return `<tr>
         <td><span class="inv-emoji">${itemEmoji(item.item)}</span><span class="inv-name">${item.item}</span></td>
         <td>
           <strong>${fmt(item.quantity)}</strong> kg
@@ -651,9 +883,9 @@
         <td>${fmtCurrency(item.price_per_unit)}/kg</td>
         ${!short ? `<td style="color:var(--text-muted);font-size:0.8rem">${timeAgo(item.last_updated)}</td>` : ""}
       </tr>`;
-    }).join("");
+        }).join("");
 
-    el.innerHTML = `<table>
+        el.innerHTML = `<table>
       <thead><tr>
         <th>Item</th><th>Stock</th>
         ${!short ? "<th>Level</th>" : ""}
@@ -662,16 +894,16 @@
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
-  }
+      }
 
-  function renderOrdersTable(orders, containerId, short = false) {
-    const el = document.getElementById(containerId);
-    if (!orders || orders.length === 0) {
-      el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div>No orders yet</div>`;
-      return;
-    }
-    const list = short ? orders.slice(0, 5) : orders;
-    const rows = list.map(o => `<tr>
+      function renderOrdersTable(orders, containerId, short = false) {
+        const el = document.getElementById(containerId);
+        if (!orders || orders.length === 0) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">📭</div>No orders yet</div>`;
+          return;
+        }
+        const list = short ? orders.slice(0, 5) : orders;
+        const rows = list.map(o => `<tr>
       <td><span class="order-ref">${o.order_ref}</span></td>
       <td style="text-transform:capitalize">${itemEmoji(o.item)} ${o.item || "—"}</td>
       <td>${fmt(o.quantity)} kg</td>
@@ -681,14 +913,14 @@
       ${!short ? `<td style="color:var(--text-muted);font-size:0.8rem">${timeAgo(o.created_at)}</td>` : ""}
       ${!short ? `<td>
         <select class="status-select" onchange="updateOrderStatus('${o.order_ref}', this.value)">
-          ${["pending","confirmed","dispatched","out_for_delivery","delivered","cancelled"].map(s => 
-            `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s.replace(/_/g, ' ').toUpperCase()}</option>`
-          ).join('')}
+          ${["pending", "confirmed", "dispatched", "out_for_delivery", "delivered", "cancelled"].map(s =>
+          `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s.replace(/_/g, ' ').toUpperCase()}</option>`
+        ).join('')}
         </select>
       </td>` : ""}
     </tr>`).join("");
 
-    el.innerHTML = `<table>
+        el.innerHTML = `<table>
       <thead><tr>
         <th>Order ID</th><th>Item</th><th>Qty</th>
         ${!short ? "<th>Total</th>" : ""}
@@ -697,16 +929,16 @@
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
-  }
+      }
 
-  function renderCallsTable(calls, containerId, short = false) {
-    const el = document.getElementById(containerId);
-    if (!calls || calls.length === 0) {
-      el.innerHTML = `<div class="empty"><div class="empty-icon">📞</div>No calls recorded</div>`;
-      return;
-    }
-    const list = short ? calls.slice(0, 5) : calls;
-    const rows = list.map(c => `<tr>
+      function renderCallsTable(calls, containerId, short = false) {
+        const el = document.getElementById(containerId);
+        if (!calls || calls.length === 0) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">📞</div>No calls recorded</div>`;
+          return;
+        }
+        const list = short ? calls.slice(0, 5) : calls;
+        const rows = list.map(c => `<tr>
       <td style="font-family:monospace;font-size:0.82rem">${c.caller || "—"}</td>
       <td>${badgeIntent(c.intent)}</td>
       <td style="text-transform:capitalize">${c.item ? itemEmoji(c.item) + " " + c.item : "—"}</td>
@@ -714,7 +946,7 @@
       <td style="color:var(--text-muted);font-size:0.8rem">${timeAgo(c.timestamp)}</td>
     </tr>`).join("");
 
-    el.innerHTML = `<table>
+        el.innerHTML = `<table>
       <thead><tr>
         <th>Caller</th><th>Intent</th><th>Item</th>
         ${!short ? "<th>Said</th>" : ""}
@@ -722,15 +954,15 @@
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
-  }
+      }
 
-  function renderReordersTable(reorders) {
-    const el = document.getElementById("reorders-table");
-    if (!reorders || reorders.length === 0) {
-      el.innerHTML = `<div class="empty"><div class="empty-icon">🔄</div>No reorders triggered yet</div>`;
-      return;
-    }
-    const rows = reorders.map(r => `<tr>
+      function renderReordersTable(reorders) {
+        const el = document.getElementById("reorders-table");
+        if (!reorders || reorders.length === 0) {
+          el.innerHTML = `<div class="empty"><div class="empty-icon">🔄</div>No reorders triggered yet</div>`;
+          return;
+        }
+        const rows = reorders.map(r => `<tr>
       <td style="text-transform:capitalize">${itemEmoji(r.item)} ${r.item}</td>
       <td>${fmt(r.quantity_ordered)} kg</td>
       <td style="font-family:monospace;font-size:0.8rem">${r.supplier_phone || "—"}</td>
@@ -738,67 +970,68 @@
       <td style="color:var(--text-muted);font-size:0.8rem">${timeAgo(r.timestamp)}</td>
     </tr>`).join("");
 
-    el.innerHTML = `<table>
+        el.innerHTML = `<table>
       <thead><tr><th>Item</th><th>Qty Ordered</th><th>Supplier</th><th>Status</th><th>Time</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
-  }
+      }
 
-  // ── LOAD ALL DATA ─────────────────────────────────────
-  async function loadAll() {
-    document.getElementById("error-banner").style.display = "none";
-    document.getElementById("last-updated").textContent = "Refreshing…";
+      // ── LOAD ALL DATA ─────────────────────────────────────
+      async function loadAll() {
+        document.getElementById("error-banner").style.display = "none";
+        document.getElementById("last-updated").textContent = "Refreshing…";
 
-    try {
-      const [statsRes, invRes, ordersRes, callsRes, reordersRes] = await Promise.all([
-        api("/api/stats"),
-        api("/api/inventory"),
-        api("/api/orders"),
-        api("/api/calls"),
-        api("/api/reorder-log"),
-      ]);
+        try {
+          const [statsRes, invRes, ordersRes, callsRes, reordersRes] = await Promise.all([
+            api("/api/stats"),
+            api("/api/inventory"),
+            api("/api/orders"),
+            api("/api/calls"),
+            api("/api/reorder-log"),
+          ]);
 
-      const stats = statsRes.stats;
-      const inv = invRes.inventory || [];
-      const orders = ordersRes.orders || [];
-      const calls = callsRes.calls || [];
-      const reorders = reordersRes.reorders || [];
+          const stats = statsRes.stats;
+          const inv = invRes.inventory || [];
+          const orders = ordersRes.orders || [];
+          const calls = callsRes.calls || [];
+          const reorders = reordersRes.reorders || [];
 
-      // Stats
-      renderStats(stats);
+          // Stats
+          renderStats(stats);
 
-      // Inventory
-      document.getElementById("inv-count-dash").textContent = inv.length + " items";
-      document.getElementById("inv-count-full").textContent = inv.length + " items";
-      renderInventoryTable(inv, "inv-summary-table", true);
-      renderInventoryTable(inv, "inventory-table", false);
+          // Inventory
+          document.getElementById("inv-count-dash").textContent = inv.length + " items";
+          document.getElementById("inv-count-full").textContent = inv.length + " items";
+          renderInventoryTable(inv, "inv-summary-table", true);
+          renderInventoryTable(inv, "inventory-table", false);
 
-      // Orders
-      document.getElementById("order-count-dash").textContent = orders.length + " orders";
-      document.getElementById("orders-count-full").textContent = orders.length + " orders";
-      renderOrdersTable(orders, "orders-summary-table", true);
-      renderOrdersTable(orders, "orders-table", false);
+          // Orders
+          document.getElementById("order-count-dash").textContent = orders.length + " orders";
+          document.getElementById("orders-count-full").textContent = orders.length + " orders";
+          renderOrdersTable(orders, "orders-summary-table", true);
+          renderOrdersTable(orders, "orders-table", false);
 
-      // Calls
-      renderCallsTable(calls, "calls-dash-table", true);
-      renderCallsTable(calls, "calls-table", false);
+          // Calls
+          renderCallsTable(calls, "calls-dash-table", true);
+          renderCallsTable(calls, "calls-table", false);
 
-      // Reorders
-      renderReordersTable(reorders);
+          // Reorders
+          renderReordersTable(reorders);
 
-      document.getElementById("last-updated").textContent =
-        "Updated " + new Date().toLocaleTimeString("en-IN");
+          document.getElementById("last-updated").textContent =
+            "Updated " + new Date().toLocaleTimeString("en-IN");
 
-    } catch (err) {
-      console.error(err);
-      showError(err.message);
-      document.getElementById("last-updated").textContent = "Failed to load";
-    }
-  }
+        } catch (err) {
+          console.error(err);
+          showError(err.message);
+          document.getElementById("last-updated").textContent = "Failed to load";
+        }
+      }
 
-  // Auto-load on start, then every 60 seconds
-  loadAll();
-  setInterval(loadAll, 60000);
-</script>
+      // Auto-load on start, then every 60 seconds
+      loadAll();
+      setInterval(loadAll, 60000);
+    </script>
 </body>
+
 </html>

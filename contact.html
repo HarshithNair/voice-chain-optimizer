@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact — Logistey | Hum aapki madad ke liye ready hain</title>
-  <meta name="description" content="Logistey se contact karo — WhatsApp, phone, ya form. Hum aapki madad ke liye hamesha ready hain." />
+  <meta name="description"
+    content="Logistey se contact karo — WhatsApp, phone, ya form. Hum aapki madad ke liye hamesha ready hain." />
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
   <style>
     .page-hero {
       background: linear-gradient(160deg, var(--cream) 0%, var(--secondary) 60%);
@@ -13,7 +16,9 @@
       text-align: center;
     }
 
-    .contact-section { padding: 96px 0; }
+    .contact-section {
+      padding: 96px 0;
+    }
 
     .contact-layout {
       display: grid;
@@ -82,10 +87,13 @@
     .form-group select:focus,
     .form-group textarea:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(196,98,45,0.1);
+      box-shadow: 0 0 0 4px rgba(196, 98, 45, 0.1);
     }
 
-    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
 
     .form-group input::placeholder,
     .form-group textarea::placeholder {
@@ -94,8 +102,8 @@
 
     .form-success {
       display: none;
-      background: rgba(46,204,113,0.1);
-      border: 1px solid rgba(46,204,113,0.3);
+      background: rgba(46, 204, 113, 0.1);
+      border: 1px solid rgba(46, 204, 113, 0.3);
       border-radius: var(--radius-md);
       padding: 20px;
       text-align: center;
@@ -148,7 +156,8 @@
     }
 
     .contact-card-icon {
-      width: 52px; height: 52px;
+      width: 52px;
+      height: 52px;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
@@ -158,19 +167,19 @@
     }
 
     .contact-card.whatsapp .contact-card-icon {
-      background: rgba(37,211,102,0.1);
+      background: rgba(37, 211, 102, 0.1);
     }
 
     .contact-card.phone .contact-card-icon {
-      background: rgba(196,98,45,0.1);
+      background: rgba(196, 98, 45, 0.1);
     }
 
     .contact-card.email .contact-card-icon {
-      background: rgba(52,152,219,0.1);
+      background: rgba(52, 152, 219, 0.1);
     }
 
     .contact-card.office .contact-card-icon {
-      background: rgba(155,89,182,0.1);
+      background: rgba(155, 89, 182, 0.1);
     }
 
     .contact-card-info .type {
@@ -203,8 +212,18 @@
       text-align: center;
     }
 
-    .wa-cta h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
-    .wa-cta p { font-size: 0.88rem; opacity: 0.85; margin-bottom: 20px; line-height: 1.6; }
+    .wa-cta h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .wa-cta p {
+      font-size: 0.88rem;
+      opacity: 0.85;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
 
     .btn-whatsapp {
       background: white;
@@ -217,18 +236,22 @@
       border-radius: var(--radius-sm);
       font-family: 'Outfit', sans-serif;
       font-size: 1rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
       transition: var(--transition);
       text-decoration: none;
     }
 
     .btn-whatsapp:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     /* Map placeholder */
-    .map-section { background: var(--secondary); padding: 60px 0; }
+    .map-section {
+      background: var(--secondary);
+      padding: 60px 0;
+    }
+
     .map-placeholder {
       background: white;
       border-radius: var(--radius-xl);
@@ -258,258 +281,360 @@
       border: 1px solid var(--border);
     }
 
-    .day-card .day { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
-    .day-card .status { font-size: 0.8rem; font-weight: 600; }
-    .day-card.open .status { color: var(--success); }
-    .day-card.closed .status { color: var(--text-light); }
-    .day-card.today { border-color: var(--primary); background: rgba(196,98,45,0.04); }
-    .day-card.today .day { color: var(--primary); }
+    .day-card .day {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .day-card .status {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .day-card.open .status {
+      color: var(--success);
+    }
+
+    .day-card.closed .status {
+      color: var(--text-light);
+    }
+
+    .day-card.today {
+      border-color: var(--primary);
+      background: rgba(196, 98, 45, 0.04);
+    }
+
+    .day-card.today .day {
+      color: var(--primary);
+    }
 
     @media (max-width: 1024px) {
-      .contact-layout { grid-template-columns: 1fr; }
+      .contact-layout {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 768px) {
-      .form-row { grid-template-columns: 1fr; }
-      .contact-form-wrap { padding: 28px; }
-      .hours-grid { grid-template-columns: repeat(4, 1fr); }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-form-wrap {
+        padding: 28px;
+      }
+
+      .hours-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
   </style>
 </head>
+
 <body>
 
-<nav class="navbar" id="navbar">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><div class="logo-icon">📦</div>Logis<span>tey</span></a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
-      <li><a href="pricing.html">Pricing</a></li><li><a href="about.html">About</a></li>
-      <li><a href="contact.html" class="active">Contact</a></li><li><a href="demo.html">Demo</a></li>
-    </ul>
-    <div class="nav-cta">
-      <a href="demo.html" class="btn btn-secondary btn-sm">Try Demo</a>
-      <a href="pricing.html" class="btn btn-primary btn-sm">Start Free</a>
-    </div>
-    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-  </div>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a>
-  <a href="about.html">About</a><a href="contact.html">Contact</a><a href="demo.html">🧪 Try Demo</a>
-</div>
-
-<!-- HERO -->
-<section class="page-hero">
-  <div class="container">
-    <span class="section-label fade-up">📞 Contact</span>
-    <h1 class="section-title fade-up delay-1" style="margin-top:16px">Hum aapki madad ke liye<br /><span class="highlight">ready hain</span></h1>
-    <p class="section-subtitle fade-up delay-2">Koi bhi sawaal ho — product ka, pricing ka, ya demo ka. Hum 30 minutes mein reply karte hain.</p>
-  </div>
-</section>
-
-<!-- CONTACT SECTION -->
-<section class="contact-section">
-  <div class="container">
-    <div class="contact-layout">
-
-      <!-- FORM -->
-      <div class="fade-up">
-        <div class="contact-form-wrap">
-          <div class="form-title">Humse baat karo 👋</div>
-          <div class="form-subtitle">Form bharo ya neeche diye options se directly contact karo.</div>
-
-          <form id="contactForm" onsubmit="handleSubmit(event)">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="firstName">Pehla Naam</label>
-                <input type="text" id="firstName" placeholder="Ramesh" required />
-              </div>
-              <div class="form-group">
-                <label for="lastName">Aakhri Naam</label>
-                <input type="text" id="lastName" placeholder="Sakharkar" />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" placeholder="+91 99999 99999" required />
-            </div>
-
-            <div class="form-group">
-              <label for="email">Email (optional)</label>
-              <input type="email" id="email" placeholder="ramesh@business.com" />
-            </div>
-
-            <div class="form-group">
-              <label for="businessType">Business Type</label>
-              <select id="businessType">
-                <option value="">Select karo...</option>
-                <option>Kirana Store</option>
-                <option>Wholesale / Distributor</option>
-                <option>FMCG Retailer</option>
-                <option>Grocery / Ration Shop</option>
-                <option>Other</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="message">Aapka Sawaal / Message</label>
-              <textarea id="message" placeholder="Main Logistey ke baare mein aur jaanna chahta hoon..."></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center" id="submitBtn">
-              📩 Message Bhejo
-            </button>
-          </form>
-
-          <div class="form-success" id="formSuccess">
-            ✅ Message mila! Hum 30 minutes mein aapko WhatsApp ya phone pe contact karenge. 🙏
-          </div>
-        </div>
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">📦</div>Logis<span>tey</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="demo.html">Demo</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="demo.html" class="btn btn-secondary btn-sm">Try Demo</a>
+        <a href="pricing.html" class="btn btn-primary btn-sm">Start Free</a>
       </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a><a href="contact.html">Contact</a><a href="demo.html">🧪 Try Demo</a>
+  </div>
 
-      <!-- CONTACT INFO -->
-      <div class="contact-info fade-up delay-2">
-        <div class="contact-info-header">
-          <h2>Direct reach karo</h2>
-          <p>Form ke alawa aap directly WhatsApp, phone ya email se bhi contact kar sakte hain.</p>
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label fade-up">📞 Contact</span>
+      <h1 class="section-title fade-up delay-1" style="margin-top:16px">Hum aapki madad ke liye<br /><span
+          class="highlight">ready hain</span></h1>
+      <p class="section-subtitle fade-up delay-2">Koi bhi sawaal ho — product ka, pricing ka, ya demo ka. Hum 30 minutes
+        mein reply karte hain.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- FORM -->
+        <div class="fade-up">
+          <div class="contact-form-wrap">
+            <div class="form-title">Humse baat karo 👋</div>
+            <div class="form-subtitle">Form bharo ya neeche diye options se directly contact karo.</div>
+
+            <form id="contactForm" onsubmit="handleSubmit(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">Pehla Naam</label>
+                  <input type="text" id="firstName" placeholder="Ramesh" required />
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Aakhri Naam</label>
+                  <input type="text" id="lastName" placeholder="Sakharkar" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="+91 99999 99999" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email (optional)</label>
+                <input type="email" id="email" placeholder="ramesh@business.com" />
+              </div>
+
+              <div class="form-group">
+                <label for="businessType">Business Type</label>
+                <select id="businessType">
+                  <option value="">Select karo...</option>
+                  <option>Kirana Store</option>
+                  <option>Wholesale / Distributor</option>
+                  <option>FMCG Retailer</option>
+                  <option>Grocery / Ration Shop</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="message">Aapka Sawaal / Message</label>
+                <textarea id="message" placeholder="Main Logistey ke baare mein aur jaanna chahta hoon..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center"
+                id="submitBtn">
+                📩 Phone Call Karo
+              </button>
+            </form>
+
+            <div class="form-success" id="formSuccess">
+              ✅ Message mila! Hum 30 minutes mein aapko WhatsApp ya phone pe contact karenge. 🙏
+            </div>
+          </div>
         </div>
 
-        <a href="https://wa.me/919999999999?text=Namaste! Main Logistey ke baare mein jaanna chahta hoon." class="contact-card whatsapp" target="_blank">
-          <div class="contact-card-icon">💬</div>
-          <div class="contact-card-info">
-            <div class="type">WhatsApp</div>
-            <div class="value">+91 99999 99999</div>
-            <div class="sub">Instant reply — 9am to 9pm</div>
+        <!-- CONTACT INFO -->
+        <div class="contact-info fade-up delay-2">
+          <div class="contact-info-header">
+            <h2>Direct reach karo</h2>
+            <p>Form ke alawa aap directly WhatsApp, phone ya email se bhi contact kar sakte hain.</p>
           </div>
-          <div style="margin-left:auto;color:var(--primary);font-size:1.2rem">→</div>
-        </a>
 
-        <a href="tel:+919999999999" class="contact-card phone">
-          <div class="contact-card-icon">📞</div>
-          <div class="contact-card-info">
-            <div class="type">Phone</div>
-            <div class="value">+91 99999 99999</div>
-            <div class="sub">Mon–Sat, 10am – 7pm</div>
-          </div>
-          <div style="margin-left:auto;color:var(--primary);font-size:1.2rem">→</div>
-        </a>
-
-        <a href="mailto:help@Logistey.in" class="contact-card email">
-          <div class="contact-card-icon">📧</div>
-          <div class="contact-card-info">
-            <div class="type">Email</div>
-            <div class="value">help@Logistey.in</div>
-            <div class="sub">Response within 4 hours</div>
-          </div>
-          <div style="margin-left:auto;color:var(--primary);font-size:1.2rem">→</div>
-        </a>
-
-        <div class="contact-card office" style="cursor:default">
-          <div class="contact-card-icon">🏢</div>
-          <div class="contact-card-info">
-            <div class="type">Office</div>
-            <div class="value">Andheri (W), Mumbai</div>
-            <div class="sub">Maharashtra 400053, India</div>
-          </div>
-        </div>
-
-        <!-- WhatsApp CTA -->
-        <div class="wa-cta">
-          <h3>💬 Chat on WhatsApp</h3>
-          <p>Sabse fast way hai hamare saath baat karna. Ek message bhejo — hum turant respond karte hain.</p>
-          <a href="https://wa.me/919999999999?text=Namaste! Main Logistey try karna chahta hoon. Demo dikhao please." class="btn-whatsapp" target="_blank">
-            💬 Start WhatsApp Chat
+          <a href="https://wa.me/919999999999?text=Namaste! Main Logistey ke baare mein jaanna chahta hoon."
+            class="contact-card whatsapp" target="_blank">
+            <div class="contact-card-icon">💬</div>
+            <div class="contact-card-info">
+              <div class="type">WhatsApp</div>
+              <div class="value">+91 99999 99999</div>
+              <div class="sub">Instant reply — 9am to 9pm</div>
+            </div>
+            <div style="margin-left:auto;color:var(--primary);font-size:1.2rem">→</div>
           </a>
-        </div>
 
-        <!-- Office hours -->
-        <div>
-          <div style="font-weight:700;color:var(--dark);margin-bottom:4px">🕐 Office Hours</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">Monday to Saturday: 9am – 9pm | Sunday: Emergency only</div>
-          <div class="hours-grid">
-            <div class="day-card closed"><div class="day">Sun</div><div class="status">Off</div></div>
-            <div class="day-card open"><div class="day">Mon</div><div class="status">Open</div></div>
-            <div class="day-card open"><div class="day">Tue</div><div class="status">Open</div></div>
-            <div class="day-card open today"><div class="day">Wed</div><div class="status">Today</div></div>
-            <div class="day-card open"><div class="day">Thu</div><div class="status">Open</div></div>
-            <div class="day-card open"><div class="day">Fri</div><div class="status">Open</div></div>
-            <div class="day-card open"><div class="day">Sat</div><div class="status">Open</div></div>
+          <a href="tel:+919999999999" class="contact-card phone">
+            <div class="contact-card-icon">📞</div>
+            <div class="contact-card-info">
+              <div class="type">Phone</div>
+              <div class="value">+91 99999 99999</div>
+              <div class="sub">Mon–Sat, 10am – 7pm</div>
+            </div>
+            <div style="margin-left:auto;color:var(--primary);font-size:1.2rem">→</div>
+          </a>
+
+          <a href="mailto:help@Logistey.in" class="contact-card email">
+            <div class="contact-card-icon">📧</div>
+            <div class="contact-card-info">
+              <div class="type">Email</div>
+              <div class="value">help@Logistey.in</div>
+              <div class="sub">Response within 4 hours</div>
+            </div>
+            <div style="margin-left:auto;color:var(--primary);font-size:1.2rem">→</div>
+          </a>
+
+          <div class="contact-card office" style="cursor:default">
+            <div class="contact-card-icon">🏢</div>
+            <div class="contact-card-info">
+              <div class="type">Office</div>
+              <div class="value">Andheri (W), Mumbai</div>
+              <div class="sub">Maharashtra 400053, India</div>
+            </div>
+          </div>
+
+          <!-- WhatsApp CTA -->
+          <div class="wa-cta">
+            <h3>💬 Chat on WhatsApp</h3>
+            <p>Sabse fast way hai hamare saath baat karna. Ek Phone Call Karo — hum turant respond karte hain.</p>
+            <a href="https://wa.me/919999999999?text=Namaste! Main Logistey try karna chahta hoon. Demo dikhao please."
+              class="btn-whatsapp" target="_blank">
+              💬 Start WhatsApp Chat
+            </a>
+          </div>
+
+          <!-- Office hours -->
+          <div>
+            <div style="font-weight:700;color:var(--dark);margin-bottom:4px">🕐 Office Hours</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px">Monday to Saturday: 9am – 9pm |
+              Sunday: Emergency only</div>
+            <div class="hours-grid">
+              <div class="day-card closed">
+                <div class="day">Sun</div>
+                <div class="status">Off</div>
+              </div>
+              <div class="day-card open">
+                <div class="day">Mon</div>
+                <div class="status">Open</div>
+              </div>
+              <div class="day-card open">
+                <div class="day">Tue</div>
+                <div class="status">Open</div>
+              </div>
+              <div class="day-card open today">
+                <div class="day">Wed</div>
+                <div class="status">Today</div>
+              </div>
+              <div class="day-card open">
+                <div class="day">Thu</div>
+                <div class="status">Open</div>
+              </div>
+              <div class="day-card open">
+                <div class="day">Fri</div>
+                <div class="status">Open</div>
+              </div>
+              <div class="day-card open">
+                <div class="day">Sat</div>
+                <div class="status">Open</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- MAP -->
-<section class="map-section">
-  <div class="container">
-    <div class="map-placeholder">
-      <div style="font-size:3rem">🗺️</div>
-      <div style="text-align:center">
-        <div style="font-weight:700;color:var(--dark);font-size:1.1rem">Logistey HQ</div>
-        <div>Andheri West, Mumbai, Maharashtra 400053</div>
-        <a href="https://maps.google.com" target="_blank" class="btn btn-primary btn-sm" style="margin-top:12px">Open in Maps →</a>
+  <!-- MAP -->
+  <section class="map-section">
+    <div class="container">
+      <div class="map-placeholder">
+        <div style="font-size:3rem">🗺️</div>
+        <div style="text-align:center">
+          <div style="font-weight:700;color:var(--dark);font-size:1.1rem">Logistey HQ</div>
+          <div>Andheri West, Mumbai, Maharashtra 400053</div>
+          <a href="https://maps.google.com" target="_blank" class="btn btn-primary btn-sm" style="margin-top:12px">Open
+            in Maps →</a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CTA -->
-<section class="cta-section grain-bg">
-  <div class="container" style="position:relative;z-index:1">
-    <h2 class="section-title fade-up" style="color:white">Abhi try karo —<br />free demo!</h2>
-    <p class="section-subtitle fade-up delay-1" style="color:rgba(255,255,255,0.8);margin:0 auto 40px">Convinced nahi ho? Demo dekho pehle — koi commitment nahi.</p>
-    <div class="cta-buttons fade-up delay-2">
-      <a href="demo.html" class="btn btn-white btn-lg">🧪 Free Demo Try Karo</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="nav-logo"><div class="logo-icon">📦</div>Logis<span style="color:var(--primary-light)">tey</span></div>
-        <p>India ke chhote aur medium businesses ke liye banaya gaya AI assistant.</p>
+  <!-- CTA -->
+  <section class="cta-section grain-bg">
+    <div class="container" style="position:relative;z-index:1">
+      <h2 class="section-title fade-up" style="color:white">Abhi try karo —<br />free demo!</h2>
+      <p class="section-subtitle fade-up delay-1" style="color:rgba(255,255,255,0.8);margin:0 auto 40px">Convinced nahi
+        ho? Demo dekho pehle — koi commitment nahi.</p>
+      <div class="cta-buttons fade-up delay-2">
+        <a href="demo.html" class="btn btn-white btn-lg">🧪 Free Demo Try Karo</a>
       </div>
-      <div class="footer-col"><h4>Pages</h4><ul><li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="demo.html">Demo</a></li></ul></div>
-      <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="#">Privacy</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="https://wa.me/919999999999">💬 WhatsApp</a></li><li><a href="tel:+919999999999">📞 +91 99999 99999</a></li></ul></div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2024 Logistey. Made with ❤️ for Indian businesses.</span>
-      <span>"Godown ka smart assistant" 📦</span>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <div class="logo-icon">📦</div>Logis<span style="color:var(--primary-light)">tey</span>
+          </div>
+          <p>India ke chhote aur medium businesses ke liye banaya gaya AI assistant.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="features.html">Features</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="demo.html">Demo</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#">Privacy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="https://wa.me/919999999999">💬 WhatsApp</a></li>
+            <li><a href="tel:+919999999999">📞 +91 99999 99999</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2024 Logistey. Made with ❤️ for Indian businesses.</span>
+        <span>"Godown ka smart assistant" 📦</span>
+      </div>
     </div>
-  </div>
-</footer>
+  </footer>
 
-<script>
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
-  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('open'));
-  const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.12 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('open'));
+    const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.12 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.textContent = '⏳ Sending...';
-    btn.disabled = true;
-    setTimeout(() => {
-      document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
-    }, 1500);
-  }
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = '⏳ Sending...';
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      }, 1500);
+    }
 
-  // Mark today's day
-  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const today = days[new Date().getDay()];
-  document.querySelectorAll('.day-card').forEach(card => {
-    card.classList.remove('today');
-    if(card.querySelector('.day').textContent === today) card.classList.add('today');
-  });
-</script>
+    // Mark today's day
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const today = days[new Date().getDay()];
+    document.querySelectorAll('.day-card').forEach(card => {
+      card.classList.remove('today');
+      if (card.querySelector('.day').textContent === today) card.classList.add('today');
+    });
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker registered', reg))
+          .catch(err => console.error('Service Worker registration failed', err));
+      });
+    }
+  </script>
+  <script src="cursor.js"></script>
 </body>
+
 </html>

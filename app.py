@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore")
+
 import os, json, requests, uuid, threading, time
 from flask import Flask, request, Response, redirect, url_for, jsonify
 from flask_cors import CORS
@@ -8,9 +11,16 @@ import sqlite3
 from datetime import datetime, timedelta
 import random
 import string
-import warnings
 
-warnings.filterwarnings("ignore")
+load_dotenv()
+REQUIRED_ENV_VARS = [
+    "GEMINI_API_KEY", "TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", 
+    "TWILIO_PHONE_NUMBER", "ELEVENLABS_API_KEY", "BASE_URL"
+]
+missing_vars = [var for var in REQUIRED_ENV_VARS if not os.getenv(var)]
+if missing_vars:
+    raise RuntimeError(f"CRITICAL: Missing environment variables: {', '.join(missing_vars)}")
+
 app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests from your website
 audio_cache = {}  # In-memory TTS audio store: session_id -> bytes
@@ -385,13 +395,21 @@ def build_response_text(intent_data, caller, session_id=None):
     # ── Stock Arrival
     if intent == "stock_arrival":
         if qty and item != "item":
+            qty = float(qty)
+            # Sanity cap: reject absurd quantities (>50,000 kg per single arrival)
+            if qty <= 0 or qty > 50000:
+                return h(
+                    f"Bhai, {qty} kilo toh sahi nahi lagta. Phir se quantity batao.",
+                    f"That quantity ({qty} kg) seems incorrect. Please repeat the quantity.",
+                lang)
             update_stock(item, qty)
             stock = get_stock(item)
             new_qty = stock[0] if stock else "?"
-        return h(
-            f"Theek hai bhai. {qty} kilo {item} ka maal receive ho gaya. Ab total stock {new_qty} kilo hai.",
-            f"Received {qty} kg of {item}. Total stock is now {new_qty} kg. Updated!"
-        , lang)
+            return h(
+                f"Theek hai bhai. {qty:.0f} kilo {item} ka maal receive ho gaya. Ab total stock {new_qty:.0f} kilo hai.",
+                f"Received {qty:.0f} kg of {item}. Total stock is now {new_qty:.0f} kg. Updated!"
+            , lang)
+        return h("Bhai, kitna maal aur kis cheez ka receive hua?", "Please specify item and quantity.", lang)
 
     # ── Stock Query
     elif intent == "stock_query":
@@ -663,7 +681,11 @@ def serve_audio():
 @app.route("/api/inventory", methods=["GET"])
 def api_inventory():
     conn = get_db()
-    rows = conn.execute("SELECT item, quantity, unit, price_per_unit, last_updated FROM inventory").fetchall()
+    rows = conn.execute(
+        "SELECT item, quantity, unit, price_per_unit, min_price, "
+        "reorder_threshold, reorder_quantity, supplier_phone, supplier_name, last_updated "
+        "FROM inventory"
+    ).fetchall()
     conn.close()
     return jsonify({"success": True, "inventory": [dict(r) for r in rows]})
 
@@ -780,6 +802,31 @@ def api_stats():
             "top_selling_item": dict(top_item) if top_item else None
         }
     })
+
+# ── STATIC FILE SERVING ──────────────────────────────
+# Flask's send_file() for HTML doesn't serve sibling JS/CSS/JSON files
+# automatically — add an explicit route so cursor.js, sw.js, manifest.json,
+# logistey-sdk.js, logistey-integration.js, style.css etc. all load correctly.
+
+import mimetypes
+
+ALLOWED_EXTENSIONS = {
+    '.js', '.css', '.json', '.png', '.jpg', '.jpeg', '.webp',
+    '.ico', '.svg', '.woff', '.woff2', '.ttf', '.txt'
+}
+
+@app.route("/<path:filename>", methods=["GET"])
+def serve_static(filename):
+    from flask import send_file, abort
+    import pathlib
+    # Security: only allow files in the project root, no path traversal
+    safe_path = pathlib.Path(filename).name   # strip any directory components
+    full_path  = pathlib.Path(os.path.dirname(os.path.abspath(__file__))) / safe_path
+    ext = pathlib.Path(safe_path).suffix.lower()
+    if ext not in ALLOWED_EXTENSIONS or not full_path.exists():
+        abort(404)
+    mime = mimetypes.guess_type(str(full_path))[0] or "application/octet-stream"
+    return send_file(str(full_path), mimetype=mime)
 
 # ── HTML DASHBOARDS ──────────────────────────────────
 
@@ -1670,8 +1717,19 @@ def test_supplier_confirm():
 
 # ── ENTRYPOINT ───────────────────────────────────────
 
-if __name__ == "__main__":
+# Always initialise DB (needed for gunicorn / production imports too)
+try:
     init_db()
+except Exception as _e:
+    print(f"[INIT_DB WARNING] {_e}")
+
+if __name__ == "__main__":
+    if "RENDER" in os.environ:
+        print("\n=== [DEPLOYMENT WARNING] ===")
+        print("SQLite 'warehouse.db' is on an ephemeral disk and will reset on every deploy.")
+        print("Attach a Render Persistent Disk manually in Dashboard to preserve data across updates.")
+        print("============================\n")
+
     # Start background stock monitor thread
     monitor = threading.Thread(target=check_stock_levels, daemon=True)
     monitor.start()

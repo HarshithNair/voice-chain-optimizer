@@ -1,53 +1,41 @@
 /**
- * Logistey JavaScript SDK
- * A lightweight client for interacting with the Logistey Flask API.
+ * Logistey Website Integration SDK
+ * Drop this into any HTML page or React/Vue/Next.js app.
+ * 
  * Usage:
- *   const sdk = new LogisteySdk("https://your-ngrok-url.ngrok-free.dev");
+ *   const gpt = new Logistey("https://your-server.com");
+ *   const inv = await gpt.getInventory();
  */
 
-class LogisteySdk {
-  constructor(baseUrl) {
-    this.baseUrl = baseUrl ? baseUrl.replace(/\/$/, "") : "";
+class Logistey {
+  // Pass a baseUrl only when calling from a different origin.
+  // When used from Flask-served pages, leave it empty ("") for relative URLs.
+  constructor(baseUrl = "") {
+    this.base = baseUrl.replace(/\/$/, "");
   }
 
   async _fetch(path, options = {}) {
-    const url = `${this.baseUrl}${path}`;
-    const res = await fetch(url, {
+    const res = await fetch(`${this.base}${path}`, {
       headers: { "Content-Type": "application/json" },
       ...options,
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `HTTP ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Logistey API error: ${res.status}`);
     return res.json();
   }
 
-  // ── INVENTORY ──────────────────────────────────────
-
-  /** Get all inventory items */
+  // ── Inventory ──────────────────────────────────────
   getInventory() {
     return this._fetch("/api/inventory");
   }
 
-  /**
-   * Update price, quantity, or min_price for an item
-   * @param {string} item - e.g. "onions"
-   * @param {{ price_per_unit?, quantity_delta?, min_price? }} data
-   */
-  updateInventory(item, data) {
-    return this._fetch(`/api/inventory/${encodeURIComponent(item)}`, {
+  updateInventory(item, { price_per_unit, quantity_delta, min_price } = {}) {
+    return this._fetch(`/api/inventory/${item}`, {
       method: "PATCH",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ price_per_unit, quantity_delta, min_price }),
     });
   }
 
-  // ── ORDERS ────────────────────────────────────────
-
-  /**
-   * List orders with optional filters
-   * @param {{ status?, phone?, item? }} filters
-   */
+  // ── Orders ─────────────────────────────────────────
   getOrders({ status, phone, item } = {}) {
     const params = new URLSearchParams();
     if (status) params.set("status", status);
@@ -56,112 +44,67 @@ class LogisteySdk {
     return this._fetch(`/api/orders?${params}`);
   }
 
-  /**
-   * Get full details + delivery timeline for a single order
-   * @param {string} orderRef - e.g. "GDN-2026-ABCD12"
-   */
   getOrder(orderRef) {
-    return this._fetch(`/api/orders/${encodeURIComponent(orderRef)}`);
+    return this._fetch(`/api/orders/${orderRef}`);
   }
 
-  /**
-   * Create a new order from the website (non-voice)
-   * @param {{ phone, item, quantity, price_per_unit, address?, notes? }} data
-   */
-  createOrder(data) {
+  createOrder({ phone, item, quantity, price_per_unit, address, notes }) {
     return this._fetch("/api/orders", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ phone, item, quantity, price_per_unit, address, notes }),
     });
   }
 
-  /**
-   * Update the status of an order
-   * @param {string} orderRef
-   * @param {{ status, note?, updated_by? }} data
-   */
-  updateOrderStatus(orderRef, data) {
-    return this._fetch(`/api/orders/${encodeURIComponent(orderRef)}/status`, {
+  updateOrderStatus(orderRef, { status, note, updated_by = "admin" }) {
+    return this._fetch(`/api/orders/${orderRef}/status`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ status, note, updated_by }),
     });
   }
 
-  // ── CALLS & STATS ─────────────────────────────────
-
-  /** Get recent call logs */
-  getCalls() {
-    return this._fetch("/api/calls");
-  }
-
-  /** Get dashboard summary stats */
+  // ── Stats & Calls ──────────────────────────────────
   getStats() {
     return this._fetch("/api/stats");
   }
 
-  // ── BUYERS ────────────────────────────────────────
-
-  /** Get all registered buyers */
-  getBuyers() {
-    return this._fetch("/api/buyers");
-  }
-
-  // ── BILLS ─────────────────────────────────────────
-
-  /** Get all bills */
-  getBills() {
-    return this._fetch("/api/bills");
-  }
-
-  // ── REORDER LOG ────────────────────────────────────
-
-  /** Get the reorder log */
-  getReorderLog() {
-    return this._fetch("/api/reorder-log");
-  }
-
-  // ── SUPPLIER CONFIRMATION ─────────────────────────
-
-  /**
-   * Trigger an outbound supplier confirmation call for an order
-   * @param {string} orderRef
-   */
-  triggerSupplierConfirm(orderRef) {
-    return this._fetch(`/api/supplier-confirm/${encodeURIComponent(orderRef)}`, {
-      method: "POST",
-    });
-  }
-
-  /**
-   * Test a supplier confirmation call to any phone
-   * @param {{ phone, order_ref? }} data
-   */
-  testSupplierConfirm(data) {
-    return this._fetch("/api/test-supplier-confirm", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  // ── EXPORT ────────────────────────────────────────
-
-  /** Open CSV export for orders in a new browser tab */
-  exportOrdersCsv() {
-    window.open(`${this.baseUrl}/export/orders.csv`, "_blank");
-  }
-
-  /** Open CSV export for inventory in a new browser tab */
-  exportInventoryCsv() {
-    window.open(`${this.baseUrl}/export/inventory.csv`, "_blank");
-  }
-
-  /** Get all data as a single JSON export */
-  exportAll() {
-    return this._fetch("/export/all");
+  getCallLogs() {
+    return this._fetch("/api/calls");
   }
 }
 
-// Auto-expose if used as a plain script tag (non-module)
+// ── React Hook (copy into your React project) ────────
+// import { useState, useEffect } from "react";
+//
+// export function useLogistey(baseUrl) {
+//   const gpt = new Logistey(baseUrl);
+//   const [inventory, setInventory] = useState([]);
+//   const [orders, setOrders] = useState([]);
+//   const [stats, setStats] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//
+//   const refresh = async () => {
+//     setLoading(true);
+//     const [inv, ord, st] = await Promise.all([
+//       gpt.getInventory(), gpt.getOrders(), gpt.getStats()
+//     ]);
+//     setInventory(inv.inventory);
+//     setOrders(ord.orders);
+//     setStats(st.stats);
+//     setLoading(false);
+//   };
+//
+//   useEffect(() => { refresh(); }, []);
+//   return { inventory, orders, stats, loading, refresh, gpt };
+// }
+
+// Export for different module systems
+// CommonJS (Node.js)
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+  module.exports = Logistey;
+}
+// Browser global
 if (typeof window !== "undefined") {
-  window.LogisteySdk = LogisteySdk;
+  window.Logistey = Logistey;
 }
+// Note: for ES Module import, use: import Logistey from './logistey-sdk.js'
+// (requires <script type="module"> or a bundler like Vite/Webpack)

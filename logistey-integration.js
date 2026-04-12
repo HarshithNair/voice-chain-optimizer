@@ -6,7 +6,9 @@
  * Make sure BASE_URL points to your Flask server (ngrok URL when local)
  */
 
-const BASE_URL = "https://playset-budget-parched.ngrok-free.dev"; // ← update this to your ngrok/server URL
+// Use relative URLs — this file is served by Flask so relative paths work
+// in all environments (local, ngrok, production) without any URL hardcoding. 
+const BASE_URL = "";
 
 // ── FETCH ALL DATA ─────────────────────────────────────────────────────────────
 
@@ -31,10 +33,11 @@ async function loadDashboardStats() {
     if (!data.success) return;
     const s = data.stats;
 
-    // Update stat cards
+    // Update stat cards (used in older dashboard layout)
     const cards = document.querySelectorAll(".stat-card .stat-val");
     if (cards[0]) cards[0].textContent = s.total_orders;
     if (cards[1]) cards[1].textContent = `₹${(s.total_revenue / 1000).toFixed(0)}K`;
+    // countLowStock() is safe to call here — inventory loads first in initLogistey
     if (cards[2]) cards[2].textContent = countLowStock();
     if (cards[3]) cards[3].textContent = s.pending_orders;
   } catch (e) {
@@ -353,10 +356,11 @@ async function loadReorderLog() {
 function initLogistey() {
   console.log("🚚 Logistey Integration — Connecting to", BASE_URL);
 
-  // Load all data on startup
-  loadInventory();
+  // Load inventory FIRST so window._inventoryData is ready before stats calls countLowStock()
+  loadInventory().then(() => {
+    loadDashboardStats();
+  });
   loadOrders();
-  loadDashboardStats();
   loadCallLogs();
   loadBuyers();
   loadReorderLog();
