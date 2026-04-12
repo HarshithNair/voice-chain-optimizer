@@ -25,6 +25,12 @@ app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests from your website
 audio_cache = {}  # In-memory TTS audio store: session_id -> bytes
 
+# Bypass ngrok's free-tier "browser warning" interstitial page
+@app.after_request
+def add_ngrok_header(response):
+    response.headers["ngrok-skip-browser-warning"] = "true"
+    return response
+
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 # ── DB SETUP ─────────────────────────────────────────
@@ -828,7 +834,39 @@ def serve_static(filename):
     mime = mimetypes.guess_type(str(full_path))[0] or "application/octet-stream"
     return send_file(str(full_path), mimetype=mime)
 
-# ── HTML DASHBOARDS ──────────────────────────────────
+# ── HTML PAGE ROUTES ─────────────────────────────────
+# Every HTML file needs an explicit route — Flask doesn't auto-serve them
+
+@app.route("/")
+@app.route("/index")
+def index():
+    from flask import send_file
+    return send_file("index.html")
+
+@app.route("/login")
+def login():
+    from flask import send_file
+    return send_file("login.html")
+
+@app.route("/about")
+def about():
+    from flask import send_file
+    return send_file("about.html")
+
+@app.route("/features")
+def features():
+    from flask import send_file
+    return send_file("features.html")
+
+@app.route("/pricing")
+def pricing():
+    from flask import send_file
+    return send_file("pricing.html")
+
+@app.route("/contact")
+def contact():
+    from flask import send_file
+    return send_file("contact.html")
 
 @app.route("/dashboard")
 def dashboard():
