@@ -375,6 +375,14 @@
       font-size: 0.85rem;
       display: none;
     }
+
+    /* ── FORMS ── */
+    .status-select {
+      background: white; border: 1px solid var(--border); border-radius: 6px; 
+      padding: 4px 8px; font-size: 0.72rem; font-weight: 700; cursor: pointer; 
+      color: var(--text-main); font-family: 'Outfit', sans-serif;
+    }
+    .status-select:hover { border-color: var(--primary); }
   </style>
 </head>
 <body>
@@ -574,6 +582,19 @@
     b.style.display = "block";
   }
 
+  async function updateOrderStatus(orderRef, status) {
+    try {
+      await fetch(`${BASE_URL}/api/orders/${orderRef}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status })
+      });
+      loadAll();
+    } catch (e) {
+      alert("Failed to update status: " + e.message);
+    }
+  }
+
   // ── RENDER FUNCTIONS ──────────────────────────────────
 
   function renderStats(stats) {
@@ -658,6 +679,13 @@
       <td>${badgeOrder(o.status)}</td>
       ${!short ? `<td style="color:var(--text-muted);font-size:0.8rem">${o.estimated_delivery || "—"}</td>` : ""}
       ${!short ? `<td style="color:var(--text-muted);font-size:0.8rem">${timeAgo(o.created_at)}</td>` : ""}
+      ${!short ? `<td>
+        <select class="status-select" onchange="updateOrderStatus('${o.order_ref}', this.value)">
+          ${["pending","confirmed","dispatched","out_for_delivery","delivered","cancelled"].map(s => 
+            `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s.replace(/_/g, ' ').toUpperCase()}</option>`
+          ).join('')}
+        </select>
+      </td>` : ""}
     </tr>`).join("");
 
     el.innerHTML = `<table>
@@ -665,7 +693,7 @@
         <th>Order ID</th><th>Item</th><th>Qty</th>
         ${!short ? "<th>Total</th>" : ""}
         <th>Status</th>
-        ${!short ? "<th>Est. Delivery</th><th>Placed</th>" : ""}
+        ${!short ? "<th>Est. Delivery</th><th>Placed</th><th>Action</th>" : ""}
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;

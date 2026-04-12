@@ -8,8 +8,9 @@ import sqlite3
 from datetime import datetime, timedelta
 import random
 import string
+import warnings
 
-load_dotenv()
+warnings.filterwarnings("ignore")
 app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests from your website
 audio_cache = {}  # In-memory TTS audio store: session_id -> bytes
@@ -784,130 +785,13 @@ def api_stats():
 
 @app.route("/dashboard")
 def dashboard():
-    conn = get_db()
-    inventory = conn.execute("SELECT item, quantity, unit, price_per_unit, last_updated FROM inventory").fetchall()
-    calls = conn.execute(
-        "SELECT caller, transcript, intent, item, quantity, language, timestamp FROM call_log ORDER BY timestamp DESC LIMIT 20"
-    ).fetchall()
-    conn.close()
-    
-    html = """<!DOCTYPE html><html><head><title>Logistey Dashboard</title>
-    <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Segoe UI',sans-serif;background:#0f1117;color:#e1e4e8;min-height:100vh;padding:24px}
-    h1{font-size:24px;font-weight:700;color:#58a6ff;margin-bottom:4px}
-    .subtitle{color:#8b949e;font-size:13px;margin-bottom:24px}
-    .nav{display:flex;gap:12px;margin-bottom:24px}
-    .nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:6px 12px;background:#161b22;border-radius:6px;border:1px solid #30363d}
-    .nav a:hover{background:#1f6feb20}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
-    .card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px}
-    .card h3{font-size:12px;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-    .card .val{font-size:28px;font-weight:700;color:#58a6ff}
-    .card .sub{font-size:12px;color:#8b949e;margin-top:4px}
-    h2{font-size:16px;font-weight:600;margin-bottom:12px;color:#e1e4e8}
-    table{width:100%;border-collapse:collapse;background:#161b22;border-radius:10px;overflow:hidden;border:1px solid #30363d;margin-bottom:24px}
-    th{background:#21262d;color:#8b949e;padding:10px 14px;text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-    td{padding:10px 14px;border-bottom:1px solid #21262d;font-size:13px}
-    tr:last-child td{border-bottom:none}
-    .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
-    .stock_arrival{background:#033a16;color:#3fb950}.stock_query{background:#0d2d6b;color:#58a6ff}
-    .price_offer{background:#3d1f00;color:#e3b341}.deal_confirm{background:#2d0b4e;color:#bc8cff}
-    .order_placed{background:#1a2b00;color:#7ee787}.delivery_query{background:#001f3d;color:#79c0ff}
-    .order_status{background:#2d1f00;color:#ffa657}
-    </style></head><body>
-    <h1>⚡ Logistey</h1>
-    <p class="subtitle">Live Warehouse Intelligence Dashboard</p>
-    <div class="nav">
-      <a href="/dashboard">📊 Dashboard</a>
-      <a href="/orders">📦 Orders</a>
-      <a href="/api/stats">📈 API Stats</a>
-    </div>
-    <div class="grid">"""
-    
-    total_stock = sum(r['quantity'] for r in inventory)
-    html += f"""
-      <div class="card"><h3>Total Items</h3><div class="val">{len(inventory)}</div><div class="sub">Commodities tracked</div></div>
-      <div class="card"><h3>Total Stock</h3><div class="val">{total_stock:,.0f}</div><div class="sub">kg across all items</div></div>
-    </div>
-    <h2>Current Inventory</h2>
-    <table><tr><th>Item</th><th>Stock (kg)</th><th>Unit</th><th>Price/kg</th><th>Last Updated</th></tr>"""
-    
-    for row in inventory:
-        html += f"<tr><td>{row['item'].title()}</td><td>{row['quantity']}</td><td>{row['unit']}</td><td>₹{row['price_per_unit']}</td><td>{row['last_updated']}</td></tr>"
-    
-    html += """</table><h2>Recent Calls</h2>
-    <table><tr><th>Caller</th><th>Said</th><th>Intent</th><th>Item</th><th>Qty</th><th>Lang</th><th>Time</th></tr>"""
-    
-    for row in calls:
-        bc = row['intent'] if row['intent'] else 'unknown'
-        transcript = (row['transcript'] or '')[:55] + ('...' if len(row['transcript'] or '') > 55 else '')
-        html += f"<tr><td>{row['caller']}</td><td>{transcript}</td><td><span class='badge {bc}'>{bc}</span></td><td>{row['item'] or '—'}</td><td>{row['quantity'] or '—'}</td><td>{row['language'] or '—'}</td><td>{row['timestamp']}</td></tr>"
-    
-    html += "</table></body></html>"
-    return html
+    from flask import send_file
+    return send_file("demo.html")
 
 @app.route("/orders")
 def orders_dashboard():
-    conn = get_db()
-    orders = conn.execute(
-        "SELECT id, order_ref, caller_phone, item, quantity, price_per_unit, total_price, status, estimated_delivery, created_at FROM orders ORDER BY created_at DESC"
-    ).fetchall()
-    conn.close()
-    
-    status_colors = {
-        'pending':'#3d1f00;color:#e3b341',
-        'confirmed':'#0d2d6b;color:#58a6ff',
-        'dispatched':'#1a2b00;color:#7ee787',
-        'out_for_delivery':'#003d1a;color:#3fb950',
-        'delivered':'#033a16;color:#3fb950',
-        'cancelled':'#2d0b0b;color:#f85149'
-    }
-    
-    html = """<!DOCTYPE html><html><head><title>Logistey — Orders</title>
-    <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Segoe UI',sans-serif;background:#0f1117;color:#e1e4e8;padding:24px}
-    h1{font-size:24px;font-weight:700;color:#58a6ff;margin-bottom:20px}
-    .nav{display:flex;gap:12px;margin-bottom:24px}
-    .nav a{color:#58a6ff;text-decoration:none;font-size:13px;padding:6px 12px;background:#161b22;border-radius:6px;border:1px solid #30363d}
-    table{width:100%;border-collapse:collapse;background:#161b22;border-radius:10px;overflow:hidden;border:1px solid #30363d}
-    th{background:#21262d;color:#8b949e;padding:10px 14px;text-align:left;font-size:12px;font-weight:600;text-transform:uppercase}
-    td{padding:10px 14px;border-bottom:1px solid #21262d;font-size:13px}
-    .badge{display:inline-block;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:700;background:}
-    form{display:inline} select{background:#21262d;color:#e1e4e8;border:1px solid #30363d;border-radius:4px;padding:4px 6px;font-size:12px}
-    button{padding:4px 10px;background:#238636;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px}
-    button:hover{background:#2ea043}
-    .order-ref{font-family:monospace;font-size:12px;color:#79c0ff}
-    </style></head><body>
-    <h1>📦 Orders Management</h1>
-    <div class="nav"><a href="/dashboard">← Dashboard</a><a href="/api/orders">API JSON</a></div>
-    <table><tr><th>Order ID</th><th>Phone</th><th>Item</th><th>Qty</th><th>Price</th><th>Total</th><th>Status</th><th>Est. Delivery</th><th>Update</th></tr>"""
-    
-    for row in orders:
-        r = dict(row)
-        color = status_colors.get(r['status'], '2d2d2d;color:#e1e4e8')
-        html += f"""<tr>
-          <td class="order-ref">{r['order_ref']}</td>
-          <td>{r['caller_phone']}</td>
-          <td>{(r['item'] or '').title()}</td>
-          <td>{r['quantity']} kg</td>
-          <td>₹{r['price_per_unit']}</td>
-          <td>₹{r['total_price']}</td>
-          <td><span class="badge" style="background:#{color}">{r['status'].replace('_',' ').upper()}</span></td>
-          <td>{r['estimated_delivery'] or '—'}</td>
-          <td>
-            <form action="/update-order/{r['order_ref']}" method="POST">
-              <select name="status">
-                {''.join(f'<option value="{s}" {"selected" if s==r["status"] else ""}>{s.replace("_"," ").title()}</option>' for s in ["pending","confirmed","dispatched","out_for_delivery","delivered","cancelled"])}
-              </select>
-              <button type="submit">✓</button>
-            </form>
-          </td>
-        </tr>"""
-    
-    html += "</table></body></html>"
-    return html
+    from flask import send_file
+    return send_file("demo.html")
 
 @app.route("/update-order/<order_ref>", methods=["POST"])
 def update_order(order_ref):
