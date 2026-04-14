@@ -6,7 +6,7 @@ A voice-native AI system that converts conversations into real-time inventory up
 
 # 🚚 Logistey- AI Powered Warehouse Intelligence
 
-> **Aapka Godown, Ab Smart Ho Gaya**  
+> **Aapka Godown, Ab 100% Automate ho gaya.**  
 > An AI voice assistant that manages stock, negotiates prices, places orders, tracks deliveries, and handles supplier reorders — all via phone call, in Hindi, English, or Hinglish.
 
 
